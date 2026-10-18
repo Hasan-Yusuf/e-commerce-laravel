@@ -1,0 +1,55 @@
+@layer components {
+    /* =============================================
+       Badge
+       =============================================
+       A pill of short text, painted from the status colours. Stock state, order
+       status and a discount all read through this one block; each names its
+       colour as a modifier, so the surface, the border and the text come from
+       the same triplet of tokens wherever the badge is drawn. */
+    .badge {
+        display: inline-flex;
+        align-items: center;
+
+        inline-size: fit-content;
+
+        padding: var(--space-100) var(--space-300);
+
+        border: var(--border-width-xs) solid transparent;
+        border-radius: var(--border-radius-pill);
+
+        font-size: var(--fs-075);
+        font-weight: var(--fw-medium);
+        line-height: var(--lh-tight);
+        white-space: nowrap;
+    }
+
+    /* A badge that has to hold its weight beside other type — an order's status
+       — reads a step louder than the default. */
+    .badge--strong {
+        font-weight: var(--fw-semibold);
+    }
+
+    .badge--info {
+        background-color: var(--clr-status-info-bg);
+        border-color: var(--clr-status-info-border);
+        color: var(--clr-status-info-text);
+    }
+
+    .badge--success {
+        background-color: var(--clr-status-success-bg);
+        border-color: var(--clr-status-success-border);
+        color: var(--clr-status-success-text);
+    }
+
+    .badge--warning {
+        background-color: var(--clr-status-warning-bg);
+        border-color: var(--clr-status-warning-border);
+        color: var(--clr-status-warning-text);
+    }
+
+    .badge--danger {
+        background-color: var(--clr-status-danger-bg);
+        border-color: var(--clr-status-danger-border);
+        color: var(--clr-status-danger-text);
+    }
+}

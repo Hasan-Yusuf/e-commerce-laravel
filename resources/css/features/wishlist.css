@@ -1,0 +1,53 @@
+@layer components {
+    /* =============================================
+       Wishlist section (rendered under the cart)
+       ============================================= */
+    .wishlist-section {
+        margin-block-start: var(--space-800);
+        padding-block-start: var(--space-600);
+
+        border-block-start: var(--border-width-xs) solid
+            var(--clr-border-subtle);
+    }
+
+    .wishlist-section__header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-300) var(--space-500);
+
+        margin-block-end: var(--space-600);
+    }
+
+    .wishlist-section__empty {
+        font-size: var(--fs-100);
+        color: var(--clr-text-secondary);
+    }
+
+    /* ── Saved entry card ── */
+    /* Reuses the catalog card look; only the action row differs: the move
+       button fills the row, the remove control stays a square. */
+    .wishlist-card__actions {
+        display: flex;
+        align-items: center;
+        gap: var(--space-200);
+    }
+
+    .wishlist-card__move-form {
+        flex: 1;
+    }
+
+    .wishlist-card__remove-form {
+        flex: none;
+    }
+
+    .wishlist-card--gone .wishlist-card__actions {
+        margin-block-start: var(--space-400);
+    }
+
+    .wishlist-card .alert {
+        padding: var(--space-200) var(--space-300);
+        box-shadow: none;
+    }
+}

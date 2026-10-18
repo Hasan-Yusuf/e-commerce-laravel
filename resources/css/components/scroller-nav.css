@@ -1,0 +1,144 @@
+@layer components {
+    /* =============================================
+       Scroller (a row that scrolls sideways, and its way along)
+       =============================================
+       A scroller is a row too wide for its box, wrapped with a pair of buttons
+       that step it. The frame the buttons hang in spans the page but is clamped
+       to the wide measure (the `.wrapper--wide` it carries), while the row
+       inside keeps the page's own measure — so the buttons stand in the gutter
+       beside the row's ends, where the hero band's do, rather than over the
+       cards, and stop short of the edge of a wide screen. The frame is only a
+       frame: what is between its buttons is still dragged, wheeled and swiped. */
+    .scroller {
+        position: relative;
+    }
+
+    .scroller-nav {
+        /* How far in from the frame's ends the buttons stand. */
+        --_nav-inset: var(--space-500);
+
+        position: absolute;
+        inset-block: 0;
+        inset-inline: 0;
+        z-index: var(--z-raised);
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding-inline: var(--_nav-inset);
+
+        /* The strip is a frame, not a cover: the row underneath stays usable. */
+        pointer-events: none;
+    }
+
+    /* The script puts `hidden` on a row that fits on screen — nothing to move —
+       and the `display` above would otherwise outrank the attribute. */
+    .scroller-nav[hidden] {
+        display: none;
+    }
+
+    /* The buttons are wired by script, so on a page without one they would be
+       controls that answer nothing. Under html.no-js they are simply not
+       offered. */
+    html.no-js .scroller-nav {
+        display: none;
+    }
+
+    .scroller-nav__button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        min-inline-size: var(--size-icon-button);
+        min-block-size: var(--size-icon-button);
+
+        padding: 0;
+
+        /* A control again, from the strip that is not one. */
+        pointer-events: auto;
+
+        color: var(--clr-action-primary-bg);
+        background-color: var(--clr-surface-card);
+        border: var(--border-width-xs) solid var(--clr-border-subtle);
+        border-radius: var(--border-radius-pill);
+
+        /* The row's own cards are behind them, so they carry their edge. */
+        box-shadow: var(--shadow-subtle);
+
+        cursor: pointer;
+
+        transition:
+            color var(--duration-animation-fast),
+            background-color var(--duration-animation-fast),
+            border-color var(--duration-animation-fast),
+            transform var(--duration-animation-fast) ease;
+
+        &:where(:hover) {
+            color: var(--clr-action-primary-text);
+            background-color: var(--clr-action-primary-bg);
+            border-color: var(--clr-action-primary-bg);
+
+            transform: scale(var(--scale-control));
+        }
+
+        /* Focused, the button steps out of the action colour and into the
+           page's opposite surface. Over the hero the action colour is the band
+           itself, so a button painted in it — however bright its ring — reads as
+           a hole punched in the band. The inverse surface is legible over the
+           band and over a page alike, and the ring still lands outside it. */
+        &:where(:focus-visible) {
+            color: var(--clr-text-inverse);
+            background-color: var(--clr-surface-inverse);
+            border-color: var(--clr-surface-inverse);
+
+            transform: scale(var(--scale-control));
+        }
+
+        /* An end of the row: there is nowhere further to go this way. */
+        &:disabled {
+            color: var(--clr-action-disabled-text);
+            background-color: var(--clr-action-disabled-bg);
+            border-color: transparent;
+
+            cursor: not-allowed;
+        }
+    }
+
+    /* The hero's band is painted in the action colour, and so is the fill a
+       button answers a pointer with: over the band those two are the same
+       colour, so the press would leave nothing to see. On the band the buttons
+       step out to the page's opposite surface instead, and the ring steps to the
+       page's surface with them, so both read against the band rather than into
+       it. */
+    .scroller-nav--on-action .scroller-nav__button {
+        &:where(:hover, :focus-visible) {
+            color: var(--clr-text-inverse);
+            background-color: var(--clr-surface-inverse);
+            border-color: var(--clr-surface-inverse);
+        }
+
+        &:where(:focus-visible) {
+            outline-color: var(--clr-surface-page);
+        }
+    }
+
+    /* "Previous" is towards the start of the row, which is to the right when the
+       page is read right to left, so the chevrons turn with the direction while
+       the buttons stay where the writing runs. */
+    [dir="rtl"] .scroller-nav__icon {
+        transform: scaleX(-1);
+    }
+
+    /* The buttons still answer the pointer and the keyboard under reduced
+       motion; they simply do not grow to say so. */
+    @media (prefers-reduced-motion: reduce) {
+        .scroller-nav__button {
+            transition: none;
+
+            &:where(:hover, :focus-visible) {
+                transform: none;
+            }
+        }
+    }
+}

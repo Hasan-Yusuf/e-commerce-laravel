@@ -1,0 +1,63 @@
+@layer components {
+    /* =============================================
+       Contact
+       =============================================
+       What the store can be reached at, and the form that writes to it. The
+       details hold the side and the form takes the rest, the same wrapping pair
+       the checkout's step and its summary make. */
+    /* The details keep the width they need; the form grows into what is left of
+       the row, and drops under the details when there is no room for both. */
+    .contact-layout__details {
+        --_details-basis: 18rem;
+
+        flex: 1 1 var(--_details-basis);
+        min-inline-size: 0;
+    }
+
+    .contact-layout__form {
+        --_form-basis: 32rem;
+
+        flex: 100 1 var(--_form-basis);
+        min-inline-size: 0;
+    }
+
+    .contact-card__title {
+        font-size: var(--fs-300);
+        font-weight: var(--fw-semibold);
+        color: var(--clr-text-primary);
+    }
+
+    /* ── The details ── */
+    .contact-details {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-200);
+
+        padding: 0;
+
+        list-style: none;
+    }
+
+    .contact-details__link {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-200);
+    }
+
+    .contact-details__note {
+        font-size: var(--fs-000);
+        color: var(--clr-text-muted);
+    }
+
+    /* ── The form ── */
+    .contact-form {
+        display: grid;
+        gap: var(--space-500);
+    }
+
+    /* The card spaces the fields, so the shared actions row only has to keep
+       laying them out. */
+    .contact-form .form-actions {
+        padding: 0;
+    }
+}

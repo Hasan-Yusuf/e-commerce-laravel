@@ -1,0 +1,35 @@
+@layer components {
+    /* =============================================
+       Site Footer
+       ============================================= */
+    .site-footer {
+        border-block-start: var(--border-width-xs) solid
+            var(--clr-border-subtle);
+
+        background-color: var(--clr-surface-card);
+    }
+
+    .site-footer__inner {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: var(--space-300) var(--space-600);
+
+        padding-block: var(--space-600);
+    }
+
+    .site-footer__links {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+
+        gap: var(--space-200);
+    }
+
+    /* Keep each label on one line so the chips wrap as whole units. */
+    .site-footer__action {
+        white-space: nowrap;
+    }
+}

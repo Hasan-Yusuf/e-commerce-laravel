@@ -1,0 +1,395 @@
+@layer components {
+    .cart-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-300) var(--space-500);
+
+        margin-block-end: var(--space-600);
+    }
+
+    .cart-lines {
+        flex: 100 1 var(--size-cart-line-inline);
+        min-inline-size: 0;
+
+        container-type: inline-size;
+        container-name: cart-lines;
+    }
+
+    .cart-items {
+        display: grid;
+        gap: var(--space-500);
+    }
+
+    .cart-items__header {
+        display: none;
+
+        align-items: center;
+
+        font-size: var(--fs-075);
+        font-weight: var(--fw-bold);
+        letter-spacing: var(--ls-eyebrow);
+        text-transform: uppercase;
+        color: var(--clr-text-muted);
+    }
+
+    .cart-items__header-cell {
+        text-align: center;
+    }
+
+    .cart-item {
+        display: grid;
+
+        gap: var(--space-300) var(--space-500);
+
+        grid-template-columns: auto minmax(0, 1fr);
+        grid-template-areas:
+            "media info"
+            "quantity quantity"
+            "total total"
+            "actions actions";
+
+        padding: var(--space-400);
+
+        background-color: var(--clr-surface-card);
+        border: var(--border-width-xs) solid var(--clr-border-subtle);
+        border-radius: var(--border-radius-md);
+
+        align-items: center;
+    }
+
+    .cart-item__media {
+        --_thumb-inline: 5rem;
+
+        grid-area: media;
+
+        inline-size: var(--_thumb-inline);
+        aspect-ratio: 1;
+        overflow: hidden;
+
+        background-color: var(--clr-surface-elevated);
+        border-radius: var(--border-radius-sm);
+
+        img {
+            inline-size: 100%;
+            block-size: 100%;
+            object-fit: contain;
+        }
+    }
+
+    .cart-item__info {
+        grid-area: info;
+
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--space-100);
+
+        min-inline-size: 0;
+    }
+
+    .cart-item__name {
+        min-inline-size: 0;
+        overflow-wrap: break-word;
+
+        font-weight: var(--fw-semibold);
+        color: var(--clr-link-text);
+        text-decoration: none;
+
+        &:where(:hover, :focus-visible) {
+            color: var(--clr-link-text-hover);
+        }
+    }
+
+    .cart-item__unit-price {
+        font-size: var(--fs-050);
+        color: var(--clr-text-secondary);
+    }
+
+    .cart-item__notices {
+        display: grid;
+        gap: var(--space-200);
+
+        .alert {
+            padding: var(--space-200) var(--space-300);
+            box-shadow: none;
+        }
+    }
+
+    .cart-item__quantity {
+        grid-area: quantity;
+
+        display: grid;
+        gap: var(--space-100);
+
+        justify-items: start;
+    }
+
+    .cart-item__error {
+        font-size: var(--fs-050);
+        color: var(--clr-status-danger-text-primary);
+    }
+
+    .cart-item__quantity-value {
+        font-size: var(--fs-050);
+        color: var(--clr-text-secondary);
+    }
+
+    .cart-item__quantity-form {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--space-200);
+    }
+
+    .cart-item__update {
+        font-size: var(--fs-050);
+        white-space: nowrap;
+    }
+
+    .cart-item__total {
+        grid-area: total;
+
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: var(--space-200);
+
+        padding-block-start: var(--space-300);
+        border-block-start: var(--border-width-xs) solid
+            var(--clr-border-subtle);
+    }
+
+    .cart-item__total-label {
+        font-size: var(--fs-000);
+        letter-spacing: var(--ls-eyebrow);
+        text-transform: uppercase;
+        color: var(--clr-text-muted);
+    }
+
+    .cart-item__total-value {
+        font-size: var(--fs-200);
+        font-weight: var(--fw-semibold);
+        color: var(--clr-text-primary);
+    }
+
+    .cart-item__actions {
+        grid-area: actions;
+
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-end;
+        gap: var(--space-200);
+    }
+
+    @container cart-lines (min-width: 46rem) {
+        .cart-items {
+            grid-template-columns: auto minmax(0, 1fr) auto auto auto auto;
+        }
+
+        .cart-items__header {
+            display: grid;
+
+            grid-column: 1 / -1;
+
+            grid-template-columns: auto minmax(0, 1fr) auto auto auto auto;
+            grid-template-columns: subgrid;
+
+            padding: var(--space-300) var(--space-400);
+
+            background-color: var(--clr-surface-card);
+            border: var(--border-width-xs) solid var(--clr-border-subtle);
+            border-start-start-radius: var(--border-radius-md);
+            border-start-end-radius: var(--border-radius-md);
+        }
+
+        .cart-item__media {
+            justify-self: center;
+        }
+
+        .cart-item {
+            grid-column: 1 / -1;
+
+            grid-template-columns: auto minmax(0, 1fr) auto auto auto auto;
+            grid-template-columns: subgrid;
+            grid-template-areas:
+                "media title price quantity total actions"
+                "media badge price quantity total actions";
+
+            align-items: center;
+
+            border-radius: 0;
+        }
+
+        .cart-item:last-child {
+            border-end-start-radius: var(--border-radius-md);
+            border-end-end-radius: var(--border-radius-md);
+        }
+
+        /* Dissolves the details block so its children take the columns below. The
+           placement is a safety net: with no `info` area in this template, the
+           block would otherwise be pushed into the bottom corner of the line. */
+        .cart-item__info {
+            grid-area: 1 / 2 / 3 / 3;
+
+            display: contents;
+        }
+
+        .cart-item__name {
+            grid-area: title;
+
+            text-align: start;
+        }
+
+        .cart-item__info > .badge {
+            grid-area: badge;
+
+            align-self: start;
+            justify-self: start;
+        }
+
+        .cart-item__unit-price {
+            grid-area: price;
+
+            justify-self: center;
+        }
+
+        .cart-item__quantity {
+            justify-items: center;
+        }
+
+        .cart-item__notices {
+            grid-column: 1 / -1;
+        }
+
+        .cart-item__actions {
+            flex-flow: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cart-item__total {
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-100);
+
+            padding-block-start: 0;
+            border-block-start: none;
+        }
+
+        /* The unit-price label and the line-total label are the shared
+           `.visually-hidden`; the column header names them here, so they are
+           left out of the eye's way but kept for a screen reader. */
+    }
+
+    /* In the card the same labels are read as captions over the values, so the
+       shared hidden rule is lifted for them. */
+    @container cart-lines (max-width: 45.99rem) {
+        .cart-item__total-label.visually-hidden,
+        .cart-item__unit-price > .visually-hidden {
+            position: static;
+            clip: auto;
+            clip-path: none;
+            width: auto;
+            height: auto;
+            overflow: visible;
+            white-space: normal;
+        }
+    }
+
+    .cart-summary {
+        --_summary-inline: 17.5rem;
+
+        flex: 1 1 var(--_summary-inline);
+
+        align-self: start;
+    }
+
+    /* The lines and the summary are a grid rather than a wrapping flex row: the
+       summary then has a column of its own to travel in, so it pins from the
+       width the pair first fits side by side — the same width the navigation
+       and the catalogue switch at. */
+    @media (min-width: 900px) {
+        .cart-layout,
+        .checkout-layout {
+            --_summary-min: 15rem;
+            --_summary-max: 20rem;
+
+            display: grid;
+            grid-template-columns:
+                minmax(0, 1fr)
+                minmax(var(--_summary-min), var(--_summary-max));
+            align-items: start;
+        }
+    }
+
+    .cart-summary__title {
+        font-size: var(--fs-200);
+        font-weight: var(--fw-semibold);
+        color: var(--clr-text-primary);
+    }
+
+    .cart-summary__coupon {
+        /* The field and the one control that answers it, on one line: the label
+           and its input make the left column, the button the right. */
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: end;
+        gap: var(--space-200);
+
+        /* The checkout action is the way on; the code is a step aside from it,
+           so it stands off further than the card's own gap. */
+        margin-block-start: var(--space-500);
+    }
+
+    /* The field is dissolved into the form's own grid, so its label, input and
+       error become rows beside the button. Every child is placed by hand rather
+       than left to auto-placement: the label and input share the first column,
+       the button answers the input from the second, and the error closes across
+       the full width under both. */
+    .cart-summary__coupon > .form-field {
+        display: contents;
+    }
+
+    .cart-summary__coupon > .form-field > label {
+        grid-area: 1 / 1;
+    }
+
+    .cart-summary__coupon > .form-field > input {
+        grid-area: 2 / 1;
+    }
+
+    .cart-summary__coupon > .btn {
+        grid-area: 2 / 2;
+    }
+
+    .cart-summary__coupon > .form-field > .form-error {
+        grid-area: 3 / 1 / 4 / -1;
+    }
+
+    /* The summary follows the lines down the page: once the two sit beside each
+       other it pins below the navigation, so the totals and the coupon stay in
+       view while a long list scrolls past. Below that width it is the last
+       block in the layout, with no room to travel, so it simply stays put. */
+    @media (min-width: 900px) {
+        .cart-summary {
+            /* Clear of the viewport edge in this range (nothing pins above the
+               summary here)… */
+            --_sticky-offset: var(--space-400);
+
+            position: sticky;
+            inset-block-start: var(--_sticky-offset);
+        }
+
+        /* …and from the navigation breakpoint the nav itself pins, so the
+           summary sits below it with a gap instead of touching it. */
+        @media (min-width: 1161px) {
+            .cart-summary {
+                --_sticky-offset: calc(
+                    var(--size-sticky-nav) + var(--space-400)
+                );
+            }
+        }
+    }
+}

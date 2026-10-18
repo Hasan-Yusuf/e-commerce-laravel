@@ -1,0 +1,125 @@
+@layer components {
+    /* =============================================
+       Banner Slider (hero)
+       ============================================= */
+    .banner-slider {
+        position: relative;
+        overflow: hidden;
+
+        padding-block: var(--space-800);
+
+        background-color: var(--clr-action-primary-bg);
+    }
+
+    .banner-slider__track {
+        display: flex;
+        gap: var(--space-400);
+
+        overflow-x: auto;
+
+        /* Approximate, not mandatory: a drag or a wheel settles near a banner
+           rather than being snapped to one mid-gesture, which reads better on
+           a touch screen and with a mouse alike. */
+        scroll-snap-type: x proximity;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    .banner-slider__slide {
+        --_slide-block-size: 300px;
+
+        position: relative;
+        overflow: hidden;
+
+        /* One banner at a time: the slide is the whole track, so a step along
+           the row is a banner rather than a quarter of one. */
+        flex: 0 0 100%;
+        block-size: var(--_slide-block-size);
+
+        scroll-snap-align: start;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: var(--space-400);
+        text-align: center;
+
+        border: var(--border-width-sm) dashed
+            color-mix(in oklch, var(--clr-text-inverse) 30%, transparent);
+        border-radius: var(--border-radius-sm);
+
+        background-color: color-mix(
+            in oklch,
+            var(--clr-text-inverse) 10%,
+            transparent
+        );
+        color: var(--clr-text-on-overlay);
+        font-weight: var(--fw-bold);
+        text-decoration: none;
+    }
+
+    /* A slide carrying an image is a backdrop with a caption on it: the caption
+       reads along the bottom. A slide without one keeps its plain, centred,
+       dashed look. The slide steps out of the caption's way on an illustrated
+       one: the gradient backing the caption has to run to the slide's edges, so
+       the caption carries the inset itself. */
+    .banner-slider__slide--with-image {
+        align-items: flex-end;
+
+        padding: 0;
+    }
+
+    /* A slide fills the track it scrolls in edge to edge, so a ring drawn
+       outside it would be cut off by the track's own overflow and a keyboard
+       visitor would see nothing. The slide draws its ring inside its edge
+       instead, where its dashed border already is. */
+    .banner-slider__slide:focus-visible {
+        outline-offset: calc(var(--border-width-sm) * -1);
+    }
+
+    .banner-slider__image {
+        position: absolute;
+        inset: 0;
+
+        inline-size: 100%;
+        block-size: 100%;
+
+        object-fit: cover;
+    }
+
+    /* The caption backs itself: the overlay colour laid on as a gradient that
+       fades to nothing, so the title is legible on top of whatever the banner
+       image puts behind it, and the image still reads above the fade. The
+       caption's own text colour stays light, because the overlay it sits on
+       stays dark whichever scheme the page is read in. The caption is taller
+       than its text on purpose: the overlay holds all the way to the top of the
+       text and only fades over the padding above it, so no line of the title
+       ends up on the clear end of the fade. */
+    .banner-slider__title {
+        position: relative;
+        /* Above the image the slide draws behind it. */
+        z-index: var(--z-raised);
+
+        max-inline-size: 100%;
+
+        padding: var(--space-800) var(--space-400) var(--space-300);
+
+        color: var(--clr-text-on-overlay);
+        background-image: linear-gradient(
+            to top,
+            var(--clr-overlay-bg) calc(100% - var(--space-800)),
+            transparent
+        );
+    }
+
+    /* Over an image the caption's gradient spans the slide: full width, down to
+       the bottom edge, so the fade backs the title rather than stopping short
+       of it. */
+    .banner-slider__slide--with-image .banner-slider__title {
+        inline-size: 100%;
+    }
+}

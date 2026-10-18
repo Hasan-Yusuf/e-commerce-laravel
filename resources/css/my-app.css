@@ -1,0 +1,62 @@
+/*
+|--------------------------------------------------------------------------
+| Storefront stylesheet
+|--------------------------------------------------------------------------
+|
+| One entry for the whole storefront foundation. It declares the cascade order
+| and then hands each layer to the file that owns it, so the browser is served
+| one stylesheet and Vite is given one input instead of an entry per part: a
+| new part is added by importing it here.
+|
+| The layers are declared before the imports, and the imports below are grouped
+| in that same order, so the layer order is settled by the declaration and
+| confirmed by the load order it would fall back to.
+|
+| Pages that need more than this push a feature stylesheet of their own on top
+| (see `@stack('styles')` in `layouts/base.blade.php`); those stay separate
+| Vite inputs because they are loaded on demand, not everywhere.
+|
+*/
+
+@layer tokens, reset, base, utilities, components;
+
+/* ── Tokens: the raw palette, the semantic roles over it, the geometry. ── */
+@import "./tokens/raw-colors.css";
+@import "./tokens/semantic-colors.css";
+@import "./tokens/design-tokens.css";
+
+/* ── One file per layer: the reset, the element defaults, the utilities. ── */
+@import "./reset.css";
+@import "./base.css";
+@import "./utilities.css";
+
+/* ── The components layer: one file per pattern, in cascade order. ── */
+@import "./components/layout.css";
+@import "./components/site-header.css";
+@import "./components/form-field.css";
+@import "./components/button.css";
+@import "./components/alert.css";
+@import "./components/separator.css";
+@import "./components/card.css";
+@import "./components/banner-slider.css";
+@import "./components/section-header.css";
+@import "./components/scroller-nav.css";
+@import "./components/category-card.css";
+@import "./components/product-card.css";
+@import "./components/brand-logo.css";
+@import "./components/pagination.css";
+@import "./components/site-footer.css";
+@import "./components/page-header.css";
+@import "./components/breadcrumbs.css";
+@import "./components/badge.css";
+@import "./components/product-price.css";
+@import "./components/empty-state.css";
+@import "./components/form-error.css";
+@import "./components/quantity-selector.css";
+@import "./components/toast.css";
+@import "./components/auth-modal.css";
+@import "./components/wishlist-button.css";
+@import "./components/checkout-step.css";
+@import "./components/order-summary.css";
+@import "./components/summary.css";
+@import "./components/address-form.css";

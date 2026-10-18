@@ -1,0 +1,118 @@
+@layer components {
+    /* =============================================
+       Checkout step (indicator and shell)
+       ============================================= */
+
+    /* The map of the flow: one item per step, and the number's colour carries
+       the state — the step being answered, one already answered, one still
+       ahead. Answered steps are links back to their form (see the checkout
+       page, which wraps them in <a>). */
+    .checkout-steps {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-200) var(--space-400);
+
+        list-style: none;
+        padding: 0;
+
+        margin-block: 0;
+    }
+
+    .checkout-steps__item {
+        display: flex;
+        align-items: center;
+        gap: var(--space-200);
+
+        font-size: var(--fs-050);
+        color: var(--clr-text-muted);
+    }
+
+    .checkout-steps__link {
+        display: flex;
+        align-items: center;
+        gap: var(--space-200);
+
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .checkout-steps__link:where(:hover, :focus-visible) {
+        color: var(--clr-link-text);
+    }
+
+    /* The number is the step's badge, on the icon-button square the other
+       square controls share: in the flow map, in the header the step being
+       shown wears and in the review blocks that restate a step. */
+    .checkout-steps__number,
+    .checkout-step__number {
+        display: inline-flex;
+        flex: none;
+        align-items: center;
+        justify-content: center;
+
+        inline-size: var(--size-icon-button);
+        block-size: var(--size-icon-button);
+
+        border: var(--border-width-xs) solid var(--clr-border-strong);
+        border-radius: var(--border-radius-pill);
+
+        font-size: var(--fs-100);
+        font-weight: var(--fw-semibold);
+    }
+
+    .checkout-steps__item--current {
+        font-weight: var(--fw-semibold);
+        color: var(--clr-text-primary);
+    }
+
+    .checkout-steps__item--current .checkout-steps__number {
+        background-color: var(--clr-action-primary-bg);
+        border-color: var(--clr-action-primary-border);
+        color: var(--clr-action-primary-text);
+    }
+
+    .checkout-steps__item--complete .checkout-steps__number {
+        background-color: var(--clr-status-success-bg);
+        border-color: var(--clr-status-success-border);
+        color: var(--clr-status-success-text-primary);
+    }
+
+    /* One step: its number and title head the body it wraps. */
+    .checkout-step {
+        display: grid;
+        gap: var(--space-500);
+
+        padding: var(--space-500);
+
+        background-color: var(--clr-surface-card);
+        border: var(--border-width-xs) solid var(--clr-border-subtle);
+        border-radius: var(--border-radius-md);
+    }
+
+    .checkout-step--current {
+        border-color: var(--clr-action-primary-border);
+    }
+
+    .checkout-step__header {
+        display: flex;
+        align-items: center;
+        gap: var(--space-300);
+    }
+
+    .checkout-step__title {
+        font-size: var(--fs-200);
+        font-weight: var(--fw-semibold);
+        color: var(--clr-text-primary);
+    }
+
+    .checkout-step__body {
+        display: grid;
+        gap: var(--space-500);
+    }
+
+    @media (min-width: 900px) {
+        .checkout-step {
+            padding: var(--space-600);
+        }
+    }
+}

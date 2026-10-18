@@ -1,0 +1,768 @@
+@layer components {
+    /* =============================================
+       Site Header (top bar + main navigation)
+       ============================================= */
+    /* The knobs live on the band, and the top bar and the navigation inside it
+       inherit them. */
+    .site-header-band {
+        /* Navigation knobs. The breakpoint is duplicated as a literal in the
+           @media rules below, which are resolved before custom properties and
+           so cannot read var(). The script is not a third copy: it reads this
+           value back and builds its query from it. */
+        --_site-header-bg: var(--clr-surface-card);
+        --_nav-breakpoint: 1160px;
+        --_nav-gap: var(--space-300);
+        --_nav-item-padding: var(--space-100);
+        --_submenu-min-inline-size: 14rem;
+        --_submenu-offset: var(--space-200);
+        --_touch-target: var(--size-touch-target);
+
+        /* Off-canvas drawer slides in from the inline-end edge. */
+        --_drawer-offset: 100%;
+        --_drawer-inline: min(360px, 90cqi);
+    }
+
+    .site-header {
+        /* In the band: the top bar takes the band's first row. */
+        grid-row: 1;
+
+        background-color: var(--_site-header-bg);
+    }
+
+    /* In RTL the drawer sits on the left, so it slides out to the left. */
+    html[dir="rtl"] .site-header-band {
+        --_drawer-offset: -100%;
+    }
+
+    .site-header__top {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-500);
+
+        padding-block: var(--space-400);
+    }
+
+    .site-header__logo-link {
+        flex-shrink: 0;
+    }
+
+    .site-header__logo {
+        font-family: var(--ff-accent);
+        font-size: var(--fs-500);
+        font-weight: var(--fw-bold);
+        color: var(--clr-link-text);
+        letter-spacing: var(--ls-tight);
+        white-space: nowrap;
+    }
+
+    .site-header__search {
+        --_icon-size: calc(var(--fs-300) * 2);
+        --_padding: var(--space-200);
+        --_search-max-inline: 500px;
+
+        display: flex;
+        flex: 1 1 auto;
+        max-inline-size: var(--_search-max-inline);
+        min-inline-size: 0; /* allow the input to shrink so the top bar fits */
+
+        .form-field {
+            display: flex;
+            align-items: center;
+
+            flex-grow: 1;
+
+            position: relative;
+            isolation: isolate;
+        }
+
+        .search-input__field {
+            inline-size: 100%;
+            padding-block: var(--space-300);
+            padding-inline: var(--space-500)
+                calc(var(--_icon-size) + var(--space-400));
+
+            border: var(--border-width-xs) solid var(--clr-border-subtle);
+            border-radius: var(--border-radius-pill);
+            background-color: var(--clr-surface-elevated);
+            font-size: var(--fs-050);
+        }
+
+        .search-input__field:focus-visible {
+            border-color: var(--clr-action-primary-border);
+        }
+
+        .search-input__button {
+            position: absolute;
+            inset-inline-end: 0;
+            inset-block: 0;
+            margin-block: auto;
+
+            block-size: fit-content;
+            padding: var(--space-100);
+        }
+
+        .search-input__icon {
+            inline-size: var(--_icon-size);
+            aspect-ratio: 1;
+        }
+    }
+
+    /* Compact placement used inside the navigation bar; the base sizing above
+       is kept for the full-width row on small screens. */
+    .site-header__search--nav {
+        --_icon-size: var(--fs-200);
+        --_nav-search-inline: clamp(9rem, 16cqi, 15rem);
+
+        /* Fixed width so a long category list shrinks/truncates instead of
+           squeezing the search. */
+        flex: 0 0 auto;
+        inline-size: var(--_nav-search-inline);
+        max-inline-size: none;
+
+        .search-input__field {
+            padding-block: var(--space-100);
+            padding-inline: var(--space-300)
+                calc(var(--_icon-size) + var(--space-200));
+        }
+
+        /* Inside the drawer it spans the panel like the search row does. */
+        @media (max-width: 1160px) {
+            --_icon-size: calc(var(--fs-300) * 2);
+
+            flex: none;
+            inline-size: 100%;
+
+            .search-input__field {
+                padding-block: var(--space-300);
+                padding-inline: var(--space-500)
+                    calc(var(--_icon-size) + var(--space-400));
+            }
+        }
+    }
+
+    /* Full-width search row shown under the header on small screens (home). */
+    .site-header__search-row {
+        display: none;
+    }
+
+    .site-header__actions {
+        display: flex;
+        flex-wrap: wrap;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: flex-end;
+        gap: var(--space-500);
+        row-gap: var(--space-100);
+
+        font-size: var(--fs-050);
+        font-weight: var(--fw-medium);
+        color: var(--clr-text-primary);
+
+        @media (max-width: 1160px) {
+            gap: var(--space-300);
+        }
+    }
+
+    @media (max-width: 600px) {
+        /* The currency chip is the least important action; drop it first so
+           the auth + cart buttons stay usable on small screens. */
+        .site-header__currency {
+            display: none;
+        }
+    }
+
+    .site-header__action {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-100);
+
+        cursor: pointer;
+        white-space: nowrap;
+    }
+
+    .site-header__action-icon {
+        flex-shrink: 0;
+
+        inline-size: var(--fs-125);
+        aspect-ratio: 1;
+    }
+
+    .site-header__cart {
+        position: relative;
+    }
+
+    .site-header__cart-badge {
+        position: absolute;
+        inset-block-start: calc(var(--space-100) * -1);
+        inset-inline-end: calc(var(--space-100) * -1);
+
+        min-inline-size: var(--space-500);
+        padding-inline: var(--space-100);
+
+        border-radius: var(--border-radius-pill);
+
+        background-color: var(--clr-action-primary-bg);
+        color: var(--clr-action-primary-text);
+
+        font-size: var(--fs-000);
+        font-weight: var(--fw-semibold);
+        line-height: var(--space-500);
+        text-align: center;
+    }
+
+    /* Related actions sit in a shared toolbar group. */
+    .site-header__group {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-200);
+    }
+
+    /* Non-interactive currency chip, styled to match the buttons. */
+    .site-header__currency {
+        padding: var(--space-200) var(--space-300);
+
+        border: var(--border-width-sm) solid var(--clr-action-secondary-border);
+        border-radius: var(--border-radius-sm);
+
+        background-color: var(--clr-action-secondary-bg);
+        color: var(--clr-action-secondary-text);
+
+        cursor: default;
+    }
+
+    /* Signed-in account chip: a link into the account area, styled like the
+       buttons beside it. */
+    /* Drawer-only actions; shown below the nav only on small screens. */
+    .site-header__drawer-actions {
+        display: none;
+    }
+
+    @media (max-width: 1160px) {
+        /* The top bar keeps just the cart so it never wraps or crowds the
+           logo; the language and account actions live in the drawer. */
+        .site-header__top {
+            gap: var(--space-300);
+        }
+
+        .site-header__actions {
+            flex-wrap: nowrap;
+            gap: var(--space-200);
+
+            /* Push the cart to the end so it sits next to the burger
+               (cart on the left, burger on the right) instead of floating in
+               the middle with the burger stranded on its own. */
+            margin-inline-start: auto;
+        }
+
+        .site-header__actions .site-header__group {
+            display: none;
+        }
+
+        .site-header__actions .site-header__action-label {
+            display: none;
+        }
+
+        /* The account button lives in the drawer; the top bar keeps the
+           cart only. */
+        .site-header__actions .site-header__account {
+            display: none;
+        }
+
+        /* The search row is the small-screen counterpart of the search in the
+           navigation (which is a drawer here). */
+        .site-header__search-row {
+            display: block;
+
+            padding-block-end: var(--space-400);
+        }
+
+        .site-header__search-row .site-header__search {
+            max-inline-size: none;
+            inline-size: 100%;
+        }
+
+        .site-header__drawer-actions {
+            display: grid;
+            gap: var(--space-300);
+
+            margin-block-start: var(--space-400);
+            padding-block-start: var(--space-400);
+
+            border-block-start: var(--border-width-xs) solid
+                var(--clr-border-subtle);
+        }
+
+        /* Close control above the menu. The extra `.site-header__nav` makes
+           this more specific than the default hidden rule, otherwise the
+           later, equal-specificity default wins and the X stays hidden. */
+        .site-header__nav .site-header__nav-top {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .site-header__nav-close {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            min-block-size: var(--_touch-target);
+            min-inline-size: var(--_touch-target);
+            padding: var(--space-200);
+
+            border: none;
+            border-radius: var(--border-radius-xs);
+
+            background: none;
+            color: var(--clr-text-primary);
+
+            cursor: pointer;
+
+            &:where(:hover, :focus-visible) {
+                background-color: var(--clr-surface-elevated);
+            }
+        }
+
+        .site-header__nav-close-icon {
+            inline-size: var(--fs-300);
+            aspect-ratio: 1;
+        }
+
+        .site-header__drawer-actions .site-header__group {
+            inline-size: 100%;
+            flex-wrap: wrap;
+        }
+
+        .site-header__drawer-actions .btn {
+            inline-size: 100%;
+            justify-content: center;
+        }
+    }
+
+    .site-header__lang-form {
+        display: contents;
+    }
+
+    /* The logout control is a form (POST + CSRF); dissolving it lets the button
+       sit in the actions row like every other action. */
+    .site-header__logout-form {
+        display: contents;
+    }
+
+    /* ── Burger (drawer trigger; shown only up to the nav breakpoint) ── */
+    .site-header__burger {
+        display: none;
+        align-items: center;
+        justify-content: center;
+
+        min-block-size: var(--_touch-target);
+        min-inline-size: var(--_touch-target);
+        padding: var(--space-200);
+
+        border: none;
+        border-radius: var(--border-radius-xs);
+
+        background: none;
+        color: var(--clr-text-primary);
+
+        cursor: pointer;
+
+        /* Both (menu + close) icons share the base class; the second is
+           hidden until the drawer is open (aria-expanded). The state is
+           driven purely by the aria attribute — no --open/--close modifiers. */
+        .site-header__burger-icon:not(:first-of-type) {
+            display: none;
+        }
+
+        &[aria-expanded="true"] {
+            .site-header__burger-icon:first-of-type {
+                display: none;
+            }
+
+            .site-header__burger-icon:not(:first-of-type) {
+                display: block;
+            }
+        }
+
+        /* Up to the breakpoint the burger becomes the nav trigger. */
+        @media (max-width: 1160px) {
+            display: inline-flex;
+        }
+    }
+
+    .site-header__burger-icon {
+        inline-size: var(--fs-300);
+        aspect-ratio: 1;
+    }
+
+    /* ── Navigation ── */
+    /* The nav sticks to the top of the viewport while the page scrolls, so the
+       categories and search stay reachable. It travels inside the header band's
+       box, which reaches over the page's row (see Page Layout above): a sticky
+       element is pinned within its parent's box, so that box has to cover the
+       page for the nav to be there for all of it. */
+    .site-header__nav {
+        position: sticky;
+        inset-block-start: 0;
+        z-index: var(--z-sticky-nav);
+
+        /* The band's second row, at its own height rather than stretched, so it
+           has room to travel as it sticks. */
+        grid-row: 2;
+        align-self: start;
+
+        border-block: var(--border-width-xs) solid var(--clr-border-subtle);
+
+        background-color: var(--_site-header-bg);
+
+        /* Up to the breakpoint the nav becomes a fixed off-canvas drawer. */
+        @media (max-width: 1160px) {
+            position: fixed;
+            inset-block: 0;
+            inset-inline-end: 0;
+            z-index: var(--z-drawer);
+
+            inline-size: var(--_drawer-inline);
+            padding: var(--space-500);
+
+            overflow-y: auto;
+            overscroll-behavior: contain;
+
+            border: none;
+
+            background-color: var(--_site-header-bg);
+            box-shadow: var(--shadow-strong);
+
+            visibility: hidden;
+            translate: var(--_drawer-offset) 0;
+
+            transition:
+                translate var(--duration-animation-default) ease,
+                visibility var(--duration-animation-default) ease;
+
+            /* aria-hidden="false" = open drawer */
+            &[aria-hidden="false"] {
+                visibility: visible;
+                translate: 0 0;
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                transition: none;
+            }
+        }
+    }
+
+    /* Categories at the start, the search on the end. */
+    .site-header__nav-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-400);
+
+        /* Stacked inside the drawer. */
+        @media (max-width: 1160px) {
+            flex-direction: column;
+            align-items: stretch;
+            gap: var(--space-200);
+        }
+    }
+
+    /* Only a sticky navigation needs the extra offset, and only where it
+       sticks: anchor jumps (#wishlist, …) must land below the bar. */
+    @media (min-width: 1161px) {
+        html {
+            scroll-padding-block-start: var(--size-sticky-nav);
+        }
+    }
+
+    /* Close control shown above the drawer menu (mobile only). */
+    .site-header__nav-top {
+        display: none;
+    }
+
+    .site-header__overlay {
+        /* Dimmed layer behind the open drawer. */
+        @media (max-width: 1160px) {
+            position: fixed;
+            inset: 0;
+            z-index: var(--z-overlay);
+
+            background-color: var(--clr-overlay-bg);
+
+            opacity: 0;
+            visibility: hidden;
+
+            transition:
+                opacity var(--duration-animation-default) ease,
+                visibility var(--duration-animation-default) ease;
+
+            /* aria-hidden="false" = open drawer */
+            &[aria-hidden="false"] {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                transition: none;
+            }
+        }
+    }
+
+    .site-header__nav-list {
+        display: flex;
+        align-items: center;
+        column-gap: var(--_nav-gap);
+        row-gap: var(--space-100);
+
+        list-style: none;
+
+        /* Stay on one line; long or numerous items shrink and truncate
+           instead of wrapping into extra rows. */
+        flex-wrap: nowrap;
+
+        /* Take the room the fixed-width search leaves, rather than pushing the
+           search out of the bar. */
+        flex: 1 1 auto;
+        min-inline-size: 0;
+
+        /* Stacks vertically inside the drawer. */
+        @media (max-width: 1160px) {
+            flex-direction: column;
+            align-items: stretch;
+            gap: var(--space-100);
+        }
+    }
+
+    .site-header__nav-item {
+        position: relative;
+
+        display: flex;
+        align-items: center;
+        gap: var(--space-100);
+
+        min-inline-size: 0;
+
+        padding-block: var(--space-100);
+
+        /* Link + toggle share one row; grid keeps a long category name from
+           pushing the arrow onto its own line, and the name truncates. */
+        @media (max-width: 1160px) {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: center;
+
+            padding-block: 0;
+        }
+    }
+
+    .site-header__nav-link {
+        --_nav-link-max-inline: 12rem;
+
+        display: block;
+        padding-block: var(--_nav-item-padding);
+
+        min-inline-size: 0;
+        max-inline-size: var(--_nav-link-max-inline);
+
+        font-size: var(--fs-050);
+        font-weight: var(--fw-medium);
+        color: var(--clr-text-secondary);
+        text-decoration: none;
+
+        transition: color var(--duration-animation-default) ease;
+
+        /* Expand to fill the drawer row. */
+        @media (max-width: 1160px) {
+            flex-grow: 1;
+
+            display: flex;
+            align-items: center;
+
+            max-inline-size: none;
+            min-block-size: var(--_touch-target);
+            padding-inline: var(--space-200);
+        }
+    }
+
+    .site-header__nav-link-label {
+        display: block;
+
+        min-inline-size: 0;
+        overflow: hidden;
+
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .site-header__nav-link:where(:hover, :focus-visible),
+    .site-header__nav-link--active {
+        color: var(--clr-link-text);
+    }
+
+    .site-header__nav-link:focus-visible,
+    .site-header__nav-toggle:focus-visible,
+    .site-header__burger:focus-visible {
+        outline: var(--border-width-sm) solid var(--clr-focus-ring);
+        outline-offset: var(--border-width-xs);
+    }
+
+    /* Toggle button that expands the single-column submenu */
+    .site-header__nav-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: var(--space-100);
+
+        border: none;
+        border-radius: var(--border-radius-xs);
+
+        background: none;
+        color: var(--clr-text-secondary);
+
+        cursor: pointer;
+
+        transition: color var(--duration-animation-default) ease;
+
+        &:where(:hover, :focus-visible) {
+            color: var(--clr-link-text);
+        }
+
+        @media (max-width: 1160px) {
+            flex-shrink: 0;
+
+            min-block-size: var(--_touch-target);
+            min-inline-size: var(--_touch-target);
+        }
+    }
+
+    .site-header__nav-toggle-icon {
+        inline-size: var(--fs-050);
+        aspect-ratio: 1;
+
+        transition: transform var(--duration-animation-fast) ease;
+    }
+
+    .site-header__nav-toggle[aria-expanded="true"]
+        .site-header__nav-toggle-icon {
+        transform: rotate(180deg);
+    }
+
+    /* Single-column submenu (disclosure panel) */
+    .site-header__submenu {
+        position: absolute;
+        inset-block-start: calc(100% + var(--_submenu-offset));
+        inset-inline-start: 0;
+        z-index: var(--z-drawer);
+
+        display: none;
+        flex-direction: column;
+        gap: var(--space-100);
+
+        min-inline-size: var(--_submenu-min-inline-size);
+        padding: var(--space-300);
+
+        background-color: var(--_site-header-bg);
+        border: var(--border-width-xs) solid var(--clr-border-subtle);
+        border-radius: var(--border-radius-sm);
+        box-shadow: var(--shadow-strong);
+
+        list-style: none;
+
+        /* Becomes a static stacked accordion panel inside the drawer. */
+        @media (max-width: 1160px) {
+            position: static;
+            grid-column: 1 / -1;
+            min-inline-size: 0;
+
+            margin-inline-start: var(--space-100);
+            padding: var(--space-100) 0 var(--space-100) var(--space-300);
+
+            border: none;
+            box-shadow: none;
+            background: none;
+        }
+    }
+
+    /* Opened through the disclosure toggle. aria-expanded is the single
+       source of truth, so this works on mobile, tablet, and desktop. */
+    .site-header__nav-toggle[aria-expanded="true"] ~ .site-header__submenu {
+        display: flex;
+    }
+
+    @media (min-width: 1161px) {
+        /* Invisible bridge across the gap between the nav item and its
+           absolutely positioned submenu. Without it the pointer leaves the
+           item while crossing the gap and the menu closes before it can be
+           hovered.
+
+           Only the bridge lives here: the panel itself is painted from the
+           toggle's aria-expanded, which the script keeps in step with the
+           pointer. Letting :hover paint it too would show — and so hand to the
+           Tab key — a submenu whose toggle still reads as collapsed. */
+        .site-header__nav-item::after {
+            content: "";
+            position: absolute;
+            inset-block-start: 100%;
+            inset-inline: 0;
+            block-size: var(--_submenu-offset);
+        }
+    }
+
+    .site-header__submenu-item {
+        list-style: none;
+    }
+
+    .site-header__submenu-link {
+        display: block;
+        padding: var(--space-100) var(--space-200);
+
+        font-size: var(--fs-050);
+        color: var(--clr-text-secondary);
+        text-decoration: none;
+
+        border-radius: var(--border-radius-xs);
+
+        transition:
+            color var(--duration-animation-default) ease,
+            background-color var(--duration-animation-default) ease;
+
+        &:where(:hover, :focus-visible) {
+            color: var(--clr-link-text);
+            background-color: var(--clr-surface-elevated);
+        }
+
+        @media (max-width: 1160px) {
+            &:where(:hover, :focus-visible) {
+                background: none;
+            }
+        }
+    }
+
+    /* Current subcategory: stays highlighted while its parent's panel is open,
+       so the selected page is visible on hover without moving the pointer. */
+    .site-header__submenu-link--active {
+        color: var(--clr-link-text);
+        background-color: var(--clr-surface-elevated);
+
+        /* The drawer uses no fill for its links, matching the hover override. */
+        @media (max-width: 1160px) {
+            background: none;
+        }
+    }
+
+    /* ── Nav toggle chevron + drawer animation under reduced motion. ── */
+    @media (prefers-reduced-motion: reduce) {
+        .site-header__nav-toggle-icon {
+            transition: none;
+        }
+    }
+
+    /* Scroll lock while the drawer is open. */
+    @media (max-width: 1160px) {
+        body[data-nav-open="true"] {
+            overflow: hidden;
+        }
+    }
+}

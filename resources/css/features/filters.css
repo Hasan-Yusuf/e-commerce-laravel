@@ -1,0 +1,357 @@
+@layer components {
+    /* =============================================
+       Catalog filters (sidebar + mobile drawer)
+       ============================================= */
+    .filter-panel__toggle {
+        display: inline-flex;
+
+        @media (min-width: 900px) {
+            display: none;
+        }
+    }
+
+    .filter-panel {
+        /* The width at which the sidebar becomes a drawer, in pixels, as this
+           stylesheet declares it. A media query resolves before custom
+           properties are, so the rules below still repeat the number; the
+           script reads this value back instead of keeping a copy of its own
+           (see catalog.js). */
+        --_drawer-breakpoint: 899.98;
+    }
+
+    .filter-sidebar {
+        padding: var(--space-500);
+
+        background-color: var(--clr-surface-card);
+        border: var(--border-width-xs) solid var(--clr-border-subtle);
+        border-radius: var(--border-radius-md);
+    }
+
+    /* The title rides at the top of the sidebar while the filters scroll under
+       it: it is the card's own header band — the title, the close control, and
+       the line under them — so the groups pass beneath it rather than beside
+       it. Sticky in both places the sidebar scrolls: the panel it sits in on a
+       wide screen, and the drawer itself on a narrow one. */
+    .filter-sidebar__header {
+        position: sticky;
+        inset-block-start: 0;
+        z-index: var(--z-local);
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-300);
+
+        /* Across the sidebar's padding, so the band is the card's own top edge
+           rather than a strip inside it… */
+        margin-block-start: calc(var(--space-500) * -1);
+        margin-inline: calc(var(--space-500) * -1);
+        margin-block-end: var(--space-400);
+
+        padding: var(--space-300) var(--space-500);
+
+        /* …opaque, so what scrolls under it is not read through it. */
+        background-color: var(--clr-surface-card);
+
+        /* The line under the title, which sticks with it. */
+        border-block-end: var(--border-width-xs) solid var(--clr-border-subtle);
+
+        /* The card's own corners, so the band does not square them off; the
+           drawer's are square, and it takes those too. */
+        border-start-start-radius: inherit;
+        border-start-end-radius: inherit;
+    }
+
+    .filter-sidebar__title {
+        font-weight: var(--fw-semibold);
+        color: var(--clr-text-primary);
+    }
+
+    .filter-sidebar__close {
+        display: none;
+        align-items: center;
+        justify-content: center;
+
+        min-block-size: var(--size-touch-target);
+        min-inline-size: var(--size-touch-target);
+        padding: var(--space-200);
+
+        border: none;
+        border-radius: var(--border-radius-xs);
+
+        background: none;
+        color: var(--clr-text-secondary);
+
+        cursor: pointer;
+    }
+
+    /* The sidebar's card insets the fields, so the form's own grid would inset
+       them a second time; its gap is left to the separators, as before. */
+    .filter-form {
+        --_form-padding-inline: 0;
+    }
+
+    /* A filter is a label and the controls it names, with no box around it. */
+    .filter-group {
+        display: grid;
+        gap: var(--space-200);
+        min-inline-size: 0;
+    }
+
+    /* The filters' rules are the shared separator, kept to the weight the card's
+       own lines carry — the header's line included — rather than the utility's
+       heavier default. Its spaces are left alone: they are what every gap here
+       is made of. */
+    .separator.filter-separator {
+        --_thickness: var(--border-width-xs);
+        --_color: var(--clr-border-subtle);
+    }
+
+    .filter-group__title {
+        margin: 0;
+
+        font-size: var(--fs-050);
+        font-weight: var(--fw-semibold);
+        color: var(--clr-text-primary);
+    }
+
+    .filter-group__options {
+        display: grid;
+        gap: var(--space-200);
+    }
+
+    /* A list of choices, kept in a box of its own: the catalogue has more
+       brands, categories and spec values than a sidebar can show at once, and
+       the closed line reads back what is picked. The choices are still
+       checkboxes, so several can be picked at once. */
+    .filter-dropdown {
+        font-size: var(--fs-050);
+        color: var(--clr-text-secondary);
+    }
+
+    .filter-dropdown__summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-200);
+
+        min-block-size: var(--size-touch-target);
+        padding: var(--space-200) var(--space-300);
+
+        border: var(--border-width-xs) solid var(--clr-border-subtle);
+        border-radius: var(--border-radius-xs);
+
+        background-color: var(--clr-surface-card);
+
+        cursor: pointer;
+        list-style: none;
+    }
+
+    /* The marker is replaced by the chevron the summary carries. */
+    .filter-dropdown__summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .filter-dropdown[open] .filter-dropdown__summary {
+        border-end-start-radius: 0;
+        border-end-end-radius: 0;
+    }
+
+    .filter-dropdown__value {
+        /* A flex item will not shrink below its content unless it is told to:
+           without this, a long selection pushes the chevron out of the box. */
+        flex: 1 1 auto;
+        min-inline-size: 0;
+
+        /* What is chosen reads as a list rather than one clipped line: the
+           names wrap after each comma they are joined with, and a name too long
+           for the box breaks inside itself instead of overflowing. */
+        overflow-wrap: anywhere;
+    }
+
+    .filter-dropdown__chevron {
+        flex-shrink: 0;
+
+        transition: rotate var(--duration-animation-default) ease;
+    }
+
+    .filter-dropdown[open] .filter-dropdown__chevron {
+        rotate: 180deg;
+    }
+
+    .filter-dropdown__options {
+        --_options-max-block: 15rem;
+
+        display: grid;
+        gap: var(--space-200);
+
+        /* A long list scrolls rather than growing the sidebar without end. */
+        max-block-size: var(--_options-max-block);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+
+        padding: var(--space-300);
+
+        border: var(--border-width-xs) solid var(--clr-border-subtle);
+        border-block-start: none;
+        border-end-start-radius: var(--border-radius-xs);
+        border-end-end-radius: var(--border-radius-xs);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .filter-dropdown__chevron {
+            transition: none;
+        }
+    }
+
+    .filter-checkbox {
+        display: flex;
+        align-items: center;
+        gap: var(--space-200);
+
+        font-size: var(--fs-050);
+        color: var(--clr-text-secondary);
+
+        cursor: pointer;
+    }
+
+    /* The lone questions sit on one line — the box, then the word it answers —
+       with no label of their own above them. */
+    .filter-toggles {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-200) var(--space-400);
+    }
+
+    /* A yes/no is a dropdown of three answers, reading at the size of the other
+       filter controls rather than the fields a form is filled in through. */
+    .filter-select {
+        inline-size: 100%;
+
+        font-size: var(--fs-050);
+    }
+
+    /* A min and a max side by side: the pair reads as one range. */
+    .filter-price {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-200);
+    }
+
+    .filter-price input {
+        inline-size: 100%;
+        min-inline-size: 0;
+
+        font-size: var(--fs-050);
+    }
+
+    .filter-form__actions {
+        display: grid;
+        gap: var(--space-200);
+    }
+    @media (min-width: 900px) {
+        .filter-panel {
+            /* Clear of the viewport edge in this range (nothing pins above the
+               filters here)… */
+            --_sticky-offset: var(--space-400);
+
+            position: sticky;
+            inset-block-start: var(--_sticky-offset);
+
+            max-block-size: calc(
+                100vh - var(--_sticky-offset) - var(--space-400)
+            );
+            max-block-size: calc(
+                100dvh - var(--_sticky-offset) - var(--space-400)
+            );
+
+            overflow-y: auto;
+            overscroll-behavior: contain;
+        }
+
+        /* …and from the navigation breakpoint the nav itself pins, so the
+           filters sit below it with a gap instead of touching it. */
+        @media (min-width: 1161px) {
+            .filter-panel {
+                --_sticky-offset: calc(
+                    var(--size-sticky-nav) + var(--space-400)
+                );
+            }
+        }
+    }
+
+    /* ── Mobile: the sidebar becomes a drawer ── */
+    @media (max-width: 899.98px) {
+        .filter-sidebar {
+            --_drawer-offset: -100%;
+            --_drawer-inline: min(360px, 90cqi);
+
+            position: fixed;
+            inset-block: 0;
+            inset-inline-start: 0;
+            z-index: var(--z-drawer);
+
+            inline-size: var(--_drawer-inline);
+            overflow-y: auto;
+            overscroll-behavior: contain;
+
+            border: none;
+            border-radius: 0;
+            box-shadow: var(--shadow-strong);
+
+            visibility: hidden;
+            translate: var(--_drawer-offset) 0;
+
+            transition:
+                translate var(--duration-animation-default) ease,
+                visibility var(--duration-animation-default) ease;
+
+            &[data-open="true"] {
+                visibility: visible;
+                translate: 0 0;
+            }
+        }
+
+        html[dir="rtl"] .filter-sidebar {
+            --_drawer-offset: 100%;
+
+            translate: var(--_drawer-offset) 0;
+
+            &[data-open="true"] {
+                translate: 0 0;
+            }
+        }
+
+        .filter-sidebar__close {
+            display: inline-flex;
+        }
+
+        .filter-sidebar__overlay {
+            position: fixed;
+            inset: 0;
+            z-index: var(--z-overlay);
+
+            background-color: var(--clr-overlay-bg);
+        }
+
+        .filter-sidebar__overlay[hidden] {
+            display: none;
+        }
+
+        body[data-filters-open="true"] {
+            overflow: hidden;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .filter-sidebar {
+                transition: none;
+            }
+        }
+    }
+
+    @media (min-width: 900px) {
+        .filter-sidebar__overlay {
+            display: none;
+        }
+    }
+}

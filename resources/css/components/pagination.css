@@ -1,0 +1,50 @@
+@layer components {
+    /* =============================================
+       Pagination
+       =============================================
+       A documented exception to the storefront's BEM naming: the pager is drawn
+       by Laravel's own `pagination::bootstrap-5` view — the pages call
+       `$paginator->links('pagination::bootstrap-5')` — so the markup keeps the
+       Bootstrap class vocabulary (`page-item`, `page-link`) and these rules
+       style it as it comes. There is no internal `.pagination__item`/`__link`
+       to name, because the item and the link are not ours to rename. */
+    .pagination {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: var(--space-100);
+
+        margin-block-start: var(--space-600);
+
+        list-style: none;
+
+        .page-item {
+            .page-link {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+
+                min-inline-size: calc(var(--space-800) + var(--space-100));
+                padding: var(--space-100) var(--space-300);
+
+                border: var(--border-width-xs) solid var(--clr-border-subtle);
+                border-radius: var(--border-radius-sm);
+
+                background-color: var(--clr-surface-card);
+                color: var(--clr-text-secondary);
+                text-decoration: none;
+            }
+
+            &.active .page-link {
+                background-color: var(--clr-action-primary-bg);
+                border-color: var(--clr-action-primary-border);
+                color: var(--clr-action-primary-text);
+            }
+
+            &.disabled .page-link {
+                pointer-events: none;
+                opacity: var(--opacity-disabled);
+            }
+        }
+    }
+}

@@ -1,0 +1,290 @@
+@layer components {
+    /* =============================================
+       Orders
+       =============================================
+       The order history, one order in detail, and the confirmation a checkout
+       lands on. The history is the cart's shape: columns while they fit, one
+       card per order when they do not. */
+    /* Six columns need more room than a phone has, so the list is one card per
+       order until there is room for the columns — the same shape, and the same
+       rules, as the cart's lines. The wrapper is the query container; the list
+       inside it is the grid, so the layout answers for the room this list is
+       actually given rather than for the window. */
+    .orders-list {
+        container-type: inline-size;
+        container-name: orders-list;
+    }
+
+    .orders-list__items {
+        display: grid;
+        gap: var(--space-400);
+    }
+
+    .orders-list__header {
+        display: none;
+
+        align-items: center;
+
+        font-size: var(--fs-075);
+        font-weight: var(--fw-bold);
+        letter-spacing: var(--ls-eyebrow);
+        text-transform: uppercase;
+        color: var(--clr-text-muted);
+    }
+
+    .orders-list__header-cell--end {
+        text-align: end;
+    }
+
+    /* One order, as a card. */
+    .order-row {
+        display: grid;
+        gap: var(--space-300) var(--space-400);
+
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-areas:
+            "number status"
+            "meta   meta"
+            "total  total"
+            "action action";
+
+        padding: var(--space-400);
+
+        background-color: var(--clr-surface-card);
+        border: var(--border-width-xs) solid var(--clr-border-subtle);
+        border-radius: var(--border-radius-md);
+
+        font-size: var(--fs-050);
+    }
+
+    .order-row__number {
+        grid-area: number;
+
+        align-self: center;
+
+        font-weight: var(--fw-semibold);
+        color: var(--clr-text-primary);
+        white-space: nowrap;
+    }
+
+    .order-row__status {
+        grid-area: status;
+
+        justify-self: end;
+    }
+
+    /* When, how it is paid for: the pair the table keeps in columns of its own. */
+    .order-row__meta {
+        grid-area: meta;
+
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-100) var(--space-400);
+
+        color: var(--clr-text-secondary);
+    }
+
+    .order-row__field {
+        display: flex;
+        gap: var(--space-100);
+    }
+
+    /* The name of a value, for the card. Where the columns carry their own
+       titles, the labels are taken out of the way. */
+    .order-row__label {
+        color: var(--clr-text-muted);
+    }
+
+    .order-row__total {
+        grid-area: total;
+
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: var(--space-200);
+
+        padding-block-start: var(--space-300);
+        border-block-start: var(--border-width-xs) solid
+            var(--clr-border-subtle);
+    }
+
+    .order-row__total-value {
+        font-size: var(--fs-200);
+        font-weight: var(--fw-semibold);
+        color: var(--clr-text-primary);
+    }
+
+    .order-row__action {
+        grid-area: action;
+
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .order-row__link {
+        white-space: nowrap;
+    }
+
+    /* Wide enough for the columns: the header row brings the names, the cards
+       become rows of one table, and the labels the cards needed go. */
+    @container orders-list (min-width: 46rem) {
+        .orders-list__items {
+            gap: 0;
+
+            grid-template-columns: auto minmax(0, 1fr) auto auto auto auto;
+        }
+
+        .orders-list__header {
+            display: grid;
+
+            grid-column: 1 / -1;
+
+            grid-template-columns: auto minmax(0, 1fr) auto auto auto auto;
+            grid-template-columns: subgrid;
+
+            padding: var(--space-300) var(--space-400);
+
+            background-color: var(--clr-surface-card);
+            border: var(--border-width-xs) solid var(--clr-border-subtle);
+            border-start-start-radius: var(--border-radius-md);
+            border-start-end-radius: var(--border-radius-md);
+        }
+
+        .order-row {
+            grid-column: 1 / -1;
+
+            grid-template-columns: auto minmax(0, 1fr) auto auto auto auto;
+            grid-template-columns: subgrid;
+            grid-template-areas: "number date status payment total action";
+
+            align-items: center;
+
+            /* Rows share the header's table: no doubling of the borders between
+               them, and only the last one closes the bottom of it. */
+            border-block-start: none;
+            border-radius: 0;
+        }
+
+        .order-row:last-child {
+            border-end-start-radius: var(--border-radius-md);
+            border-end-end-radius: var(--border-radius-md);
+        }
+
+        /* Dissolves the card's pair so each half takes its own column. */
+        .order-row__meta {
+            display: contents;
+        }
+
+        .order-row__field--date {
+            grid-area: date;
+        }
+
+        .order-row__field--payment {
+            grid-area: payment;
+        }
+
+        .order-row__status {
+            justify-self: start;
+        }
+
+        .order-row__total {
+            justify-self: end;
+
+            padding-block-start: 0;
+            border-block-start: none;
+        }
+
+        .order-row__total-value {
+            font-size: inherit;
+            color: inherit;
+        }
+
+        .order-row__action {
+            justify-self: end;
+        }
+    }
+
+    /* Where the rows lay out as columns the labels are the shared
+       `.visually-hidden` — the column header names each value — and in the card
+       the same labels are read as captions, so the shared hidden rule is lifted
+       for them. */
+    @container orders-list (max-width: 45.99rem) {
+        .order-row__label.visually-hidden {
+            position: static;
+            clip: auto;
+            clip-path: none;
+            width: auto;
+            height: auto;
+            overflow: visible;
+            white-space: normal;
+        }
+    }
+
+    /* The row above the table, holding whatever the shopper can decide about
+       the list itself. */
+    .orders-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--space-300) var(--space-400);
+
+        margin-block-end: var(--space-400);
+    }
+
+    /* One select: the form holds nothing but its own control. */
+    .orders-per-page {
+        display: flex;
+        align-items: center;
+        gap: var(--space-200);
+
+        margin-inline-start: auto;
+    }
+
+    .orders-per-page__label {
+        font-size: var(--fs-050);
+        color: var(--clr-text-secondary);
+        white-space: nowrap;
+    }
+
+    .orders-per-page__select {
+        --_per-page-select-min: 6rem;
+
+        min-inline-size: var(--_per-page-select-min);
+    }
+
+    /* ── One order ── */
+    .order-detail,
+    .order-confirmation {
+        display: grid;
+        gap: var(--space-500);
+    }
+
+    .order-detail__header,
+    .order-confirmation__header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--space-200) var(--space-400);
+    }
+
+    .order-detail__date,
+    .order-confirmation__number {
+        font-size: var(--fs-300);
+        font-weight: var(--fw-bold);
+        color: var(--clr-text-primary);
+    }
+
+    .order-detail__date,
+    .order-confirmation__date,
+    .order-confirmation__eta {
+        font-size: var(--fs-050);
+        color: var(--clr-text-secondary);
+    }
+
+    .order-detail__actions,
+    .order-confirmation__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-200);
+    }
+}

@@ -1,0 +1,54 @@
+@layer components {
+    /*
+        A brand mark: the logo the shop uploaded for the scheme the page is read
+        in, or the brand name where that scheme has none.
+
+        The mark is drawn inside a box a little taller than the text it sits
+        beside, so a card and the product page show it at their own type scale
+        from this one rule, and a tall stacked logo is not shrunk to a sliver by
+        the rule that suits a wide wordmark: the box sets the height, the width
+        is capped, and the shape is kept within the box. Which of the two marks
+        is drawn — the light-scheme logo, the dark-scheme logo, or the name
+        standing in — is decided from the reader's colour scheme alone, so no
+        JavaScript is needed to choose.
+    */
+    .brand-logo {
+        --_block-size: 2em;
+        --_max-inline-size: 7em;
+
+        display: inline-block;
+        vertical-align: middle;
+
+        flex-shrink: 0;
+
+        block-size: var(--_block-size);
+        inline-size: auto;
+        max-inline-size: var(--_max-inline-size);
+
+        object-fit: contain;
+    }
+
+    .brand-name {
+        font-weight: var(--fw-medium);
+        text-transform: uppercase;
+    }
+
+    /* The light-scheme mark shows by default; on a dark scheme it is swapped
+       for the dark-scheme mark, or for the name where none was uploaded. */
+    .brand-logo--for-dark,
+    .brand-name--for-dark {
+        display: none;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        .brand-logo--for-light,
+        .brand-name--for-light {
+            display: none;
+        }
+
+        .brand-logo--for-dark,
+        .brand-name--for-dark {
+            display: inline-block;
+        }
+    }
+}

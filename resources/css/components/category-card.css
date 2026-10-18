@@ -1,0 +1,133 @@
+@layer components {
+    /* =============================================
+       Categories Grid
+       ============================================= */
+    /* Both card grids share the same intrinsic column recipe and only differ
+       in how narrow a column may get before the grid collapses to one. */
+    .categories-grid,
+    .products-grid {
+        --_column-width: repeat(
+            auto-fill,
+            minmax(min(var(--_min-column-width), 100%), 1fr)
+        );
+
+        display: grid;
+        grid-template-columns: var(--_column-width);
+        gap: var(--space-600);
+    }
+
+    .categories-grid {
+        --_min-column-width: 10rem;
+    }
+
+    /* A rail: the same cards, kept in one row that scrolls sideways, so a
+       section shows everything it has without pushing the next section off the
+       page. The scrollbar is left in place rather than hidden: on a desktop it
+       is the cue a wheel has that there is more to the side, and it is drawn
+       from the palette like every other scrollbar on the site (see base.css). */
+    .categories-grid--rail,
+    .products-grid--rail {
+        grid-template-columns: none;
+        grid-auto-flow: column;
+        grid-auto-columns: var(--_rail-column);
+
+        /* Room for the cards' shadows inside the scrollport. */
+        padding-block: var(--space-200);
+
+        overflow-x: auto;
+        overflow-y: hidden;
+        overscroll-behavior-inline: contain;
+
+        scroll-snap-type: inline proximity;
+
+        > * {
+            scroll-snap-align: start;
+        }
+    }
+
+    .categories-grid--rail {
+        --_rail-column: min(11rem, 55cqi);
+    }
+
+    .products-grid--rail {
+        --_rail-column: min(15rem, 70cqi);
+    }
+
+    .category-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-400);
+
+        padding: var(--space-600);
+        text-align: center;
+
+        background-color: var(--clr-surface-card);
+        border-radius: var(--border-radius-md);
+        box-shadow: var(--shadow-subtle);
+
+        color: inherit;
+        text-decoration: none;
+        cursor: pointer;
+
+        transition:
+            transform var(--duration-animation-fast) ease,
+            box-shadow var(--duration-animation-fast) ease;
+
+        &:where(:hover, :focus-visible) {
+            transform: translateY(calc(var(--lift-control) * -1));
+            box-shadow: var(--shadow-strong);
+        }
+    }
+
+    .category-card__image {
+        --_image-block-size: 120px;
+
+        inline-size: 100%;
+        block-size: var(--_image-block-size);
+
+        overflow: hidden;
+
+        border-radius: var(--border-radius-xs);
+        background-color: var(--clr-surface-elevated);
+
+        img {
+            inline-size: 100%;
+            block-size: 100%;
+            object-fit: cover;
+
+            transition: transform var(--duration-animation-slow) ease;
+        }
+    }
+
+    /* The picture leans in as the card rises, the way a product card's does. */
+    .category-card:where(:hover, :focus-visible) .category-card__image img {
+        transform: scale(var(--scale-image));
+    }
+
+    .category-card__title {
+        font-size: var(--fs-125);
+        font-weight: var(--fw-regular);
+        color: var(--clr-text-secondary);
+    }
+
+    /* A reader who has asked the page not to move still gets every colour and
+       shadow the pointer brings; only the movement is withheld. */
+    @media (prefers-reduced-motion: reduce) {
+        .category-card {
+            transition: none;
+
+            &:where(:hover, :focus-visible) {
+                transform: none;
+            }
+        }
+
+        .category-card__image img {
+            transition: none;
+        }
+
+        .category-card:where(:hover, :focus-visible) .category-card__image img {
+            transform: none;
+        }
+    }
+}

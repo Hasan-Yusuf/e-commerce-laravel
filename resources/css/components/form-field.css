@@ -1,0 +1,124 @@
+@layer components {
+    /* =============================================
+       Form fields and choices
+       =============================================
+       The label-over-control block every form is built from, and the choice
+       controls that wear the same shape. */
+    .form-field {
+        display: grid;
+        gap: var(--_gap, var(--space-300));
+
+        text-transform: capitalize;
+
+        @media (min-width: 600px) {
+            grid-column: span var(--_column-span, 1);
+        }
+    }
+
+    /* Requirements listed under a field (the password policy), generated from the
+       same rule the server validates with. Global, like the field itself, so any
+       page can render one. */
+    .form-field__rules {
+        list-style: none;
+        padding: 0;
+
+        font-size: var(--fs-050);
+        color: var(--clr-text-muted);
+    }
+
+    .form-actions {
+        grid-column: 1 / -1;
+        display: flex;
+
+        padding: var(--space-100) var(--space-200);
+        gap: var(--space-300);
+
+        & > * {
+            flex-grow: 1;
+        }
+    }
+
+    /* A choice control: what the shared radio and checkbox components render.
+       The label wraps the control and its name, so the whole line is the click
+       target and a choice that has no name of its own is still one. */
+    .radio-field,
+    .checkbox-field {
+        display: flex;
+        align-items: center;
+        gap: var(--_gap, var(--space-300));
+
+        cursor: pointer;
+    }
+
+    /* A choice that explains itself lines the control up with the name rather
+       than with the middle of the two lines. */
+    .radio-field--with-description,
+    .checkbox-field--with-description {
+        align-items: flex-start;
+    }
+
+    .radio-field__body,
+    .checkbox-field__body {
+        display: grid;
+        gap: var(--space-100);
+    }
+
+    .radio-field__title,
+    .checkbox-field__title {
+        font-weight: var(--fw-semibold);
+        color: var(--clr-text-primary);
+    }
+
+    .radio-field__description,
+    .checkbox-field__description {
+        font-size: var(--fs-050);
+        color: var(--clr-text-secondary);
+    }
+
+    /* Inside a radio or checkbox field every choice is a card of its own, in
+       as many columns as the field has room for. */
+    .form-field--radio:has(> .radio-field),
+    .form-field--checkbox:has(> .checkbox-field) {
+        --_min-width: 200px;
+
+        display: grid;
+        gap: var(--_gap, var(--space-300));
+        grid-template-columns: repeat(
+            auto-fit,
+            minmax(min(var(--_min-width), 100%), 1fr)
+        );
+
+        border: none;
+
+        legend {
+            color: var(--clr-text-primary);
+        }
+    }
+
+    .form-field--radio:has(> .radio-field) > .radio-field,
+    .form-field--checkbox:has(> .checkbox-field) > .checkbox-field {
+        border: var(--border-width-xs) solid var(--clr-border-strong);
+        border-radius: var(--border-radius-sm);
+
+        padding: var(--space-200) var(--space-300);
+
+        &:where(:hover, :focus-visible, :focus-within) {
+            background-color: color-mix(
+                in oklch,
+                var(--clr-action-primary-bg),
+                transparent var(--transparent-percentage)
+            );
+        }
+
+        &:has(input:checked) {
+            background: color-mix(
+                in oklch,
+                var(--clr-action-primary-bg),
+                transparent var(--transparent-percentage)
+            );
+
+            outline: var(--border-width-xs) solid
+                var(--clr-action-primary-border);
+        }
+    }
+}

@@ -1,0 +1,236 @@
+@layer tokens {
+    :root {
+        color-scheme: light dark;
+
+        /* The light scheme is tuned to keep type and controls at AA against the
+           surfaces they land on: body and muted text clear 4.5:1 on the page, a
+           card and the elevated surface; a link or an action's label clears it
+           on the same surfaces; and the focus ring clears the 3:1 a non-text
+           indicator needs. The dark scheme's ramp is looser on purpose — light
+           type on a dark field reads at these steps. */
+
+        /* ── Surfaces ── */
+        --clr-surface-page: var(--gray-50);
+        --clr-surface-card: var(--gray-100);
+        --clr-surface-elevated: var(--gray-200);
+        --clr-surface-inverse: var(--gray-950);
+
+        /* ── Text ── */
+        --clr-text-primary: var(--gray-950);
+        --clr-text-secondary: var(--gray-700);
+        --clr-text-muted: var(--gray-600);
+        --clr-text-inverse: var(--gray-50);
+        --clr-text-on-primary: var(--gray-50);
+        --clr-text-on-action: var(--gray-50);
+        --clr-text-on-overlay: var(--gray-50);
+
+        /* ── Borders ── */
+        --clr-border-subtle: var(--gray-300);
+        --clr-border-strong: var(--gray-600);
+        --clr-border-focus: var(--primary-600);
+        --clr-border-inverse: var(--gray-300);
+
+        /* ── Actions ── */
+        /* Primary */
+        --clr-action-primary-bg: var(--primary-700);
+        --clr-action-primary-bg-hover: var(--primary-800);
+        --clr-action-primary-bg-active: var(--primary-900);
+        --clr-action-primary-border: var(--primary-700);
+        --clr-action-primary-text: var(--clr-text-on-action);
+
+        /* Secondary */
+        --clr-action-secondary-bg: var(--gray-200);
+        --clr-action-secondary-bg-hover: var(--gray-300);
+        --clr-action-secondary-bg-active: var(--gray-400);
+        --clr-action-secondary-border: var(--gray-300);
+        --clr-action-secondary-text: var(--clr-text-primary);
+
+        /* Tertiary (ghost) */
+        --clr-action-tertiary-bg: transparent;
+        --clr-action-tertiary-bg-hover: var(--gray-100);
+        --clr-action-tertiary-text: var(--primary-700);
+        --clr-action-tertiary-text-hover: var(--primary-800);
+        --clr-action-tertiary-border: var(--primary-700);
+
+        /* Danger */
+        --clr-action-danger-bg: var(--danger-700);
+        --clr-action-danger-bg-hover: var(--danger-800);
+        --clr-action-danger-bg-active: var(--danger-900);
+        --clr-action-danger-text: var(--clr-text-on-action);
+        --clr-action-danger-border: var(--danger-300);
+
+        /* Success */
+        --clr-action-success-bg: var(--success-700);
+        --clr-action-success-bg-hover: var(--success-800);
+        --clr-action-success-text: var(--clr-text-on-action);
+        --clr-action-success-border: var(--success-200);
+
+        /* Warning */
+        --clr-action-warning-bg: var(--warning-400);
+        --clr-action-warning-bg-hover: var(--warning-500);
+        --clr-action-warning-text: var(--gray-950);
+        --clr-action-warning-border: var(--warning-200);
+
+        /* Disabled */
+        --clr-action-disabled-bg: var(--gray-300);
+        --clr-action-disabled-text: var(--gray-500);
+        --clr-action-disabled-percentage: 10%;
+
+        /* ── Status (alerts, badges) ── */
+        /* Info */
+        --clr-status-info-bg: var(--info-100);
+        --clr-status-info-text-primary: var(--info-900);
+        --clr-status-info-text: var(--info-800);
+        --clr-status-info-border: var(--info-300);
+
+        /* Success */
+        --clr-status-success-bg: var(--success-100);
+        --clr-status-success-text-primary: var(--success-900);
+        --clr-status-success-text: var(--success-800);
+        --clr-status-success-border: var(--success-300);
+
+        /* Warning */
+        --clr-status-warning-bg: var(--warning-100);
+        --clr-status-warning-text-primary: var(--warning-900);
+        --clr-status-warning-text: var(--warning-800);
+        --clr-status-warning-border: var(--warning-300);
+
+        /* Danger */
+        --clr-status-danger-bg: var(--danger-100);
+        --clr-status-danger-text-primary: var(--danger-900);
+        --clr-status-danger-text: var(--danger-800);
+        --clr-status-danger-border: var(--danger-300);
+
+        /* ── Links ── */
+        --clr-link-text: var(--primary-800);
+        --clr-link-text-hover: var(--primary-900);
+        --clr-link-text-visited: var(--primary-900);
+        --clr-link-text-active: var(--primary-900);
+
+        /* ── Scrollbar ── */
+        /* The thumb is the primary ramp, dark enough on the page and on a card
+           in this scheme to clear the 3:1 a non-text control needs (WCAG 1.4.11
+           Non-text Contrast). The track stays transparent so the bar takes
+           whatever surface it is drawn on — a page, a card, the drawer — rather
+           than clashing with the one it is not. */
+        --clr-scrollbar-thumb: var(--primary-600);
+        --clr-scrollbar-thumb-hover: var(--primary-700);
+        --clr-scrollbar-track: transparent;
+
+        /* ── Focus / Overlay / Shadow ── */
+        --clr-focus-ring: var(--primary-600);
+        --clr-overlay-bg: oklch(0 0 0 / 0.5);
+        --clr-shadow-color: oklch(0 0 0 / 0.08);
+
+        @media (prefers-color-scheme: dark) {
+            /* ── Surfaces ── */
+            --clr-surface-page: var(--gray-950);
+            --clr-surface-card: var(--gray-900);
+            --clr-surface-elevated: var(--gray-800);
+            --clr-surface-inverse: var(--gray-50);
+
+            /* ── Text ── */
+            --clr-text-primary: var(--gray-50);
+            --clr-text-secondary: var(--gray-300);
+            --clr-text-muted: var(--gray-400);
+            --clr-text-inverse: var(--gray-950);
+            --clr-text-on-primary: var(--gray-950);
+            --clr-text-on-action: var(--gray-950);
+            --clr-text-on-overlay: var(--gray-50);
+
+            /* ── Borders ── */
+            --clr-border-subtle: var(--gray-700);
+            --clr-border-strong: var(--gray-400);
+            --clr-border-focus: var(--primary-400);
+            --clr-border-inverse: var(--gray-700);
+
+            /* ── Actions ── */
+            /* Primary (lighter for better contrast on dark) */
+            --clr-action-primary-bg: var(--primary-500);
+            --clr-action-primary-bg-hover: var(--primary-400);
+            --clr-action-primary-bg-active: var(--primary-300);
+            --clr-action-primary-border: var(--primary-500);
+            --clr-action-primary-text: var(--clr-text-on-action);
+
+            /* Secondary */
+            --clr-action-secondary-bg: var(--gray-800);
+            --clr-action-secondary-bg-hover: var(--gray-700);
+            --clr-action-secondary-bg-active: var(--gray-600);
+            --clr-action-secondary-border: var(--gray-700);
+            --clr-action-secondary-text: var(--clr-text-primary);
+
+            /* Tertiary (ghost) */
+            --clr-action-tertiary-bg: transparent;
+            --clr-action-tertiary-bg-hover: var(--gray-800);
+            --clr-action-tertiary-text: var(--primary-400);
+            --clr-action-tertiary-text-hover: var(--primary-300);
+            --clr-action-tertiary-border: var(--primary-400);
+
+            /* Danger */
+            --clr-action-danger-bg: var(--danger-500);
+            --clr-action-danger-bg-hover: var(--danger-400);
+            --clr-action-danger-bg-active: var(--danger-300);
+            --clr-action-danger-text: var(--clr-text-on-action);
+            --clr-action-danger-border: var(--danger-400);
+
+            /* Success */
+            --clr-action-success-bg: var(--success-500);
+            --clr-action-success-bg-hover: var(--success-400);
+            --clr-action-success-text: var(--clr-text-on-action);
+            --clr-action-success-border: var(--success-400);
+
+            /* Warning */
+            --clr-action-warning-bg: var(--warning-500);
+            --clr-action-warning-bg-hover: var(--warning-400);
+            --clr-action-warning-text: var(--gray-950);
+            --clr-action-warning-border: var(--warning-400);
+
+            /* Disabled */
+            --clr-action-disabled-bg: var(--gray-700);
+            --clr-action-disabled-text: var(--gray-500);
+
+            /* ── Status ── */
+            /* Info */
+            --clr-status-info-bg: var(--info-900);
+            --clr-status-info-text-primary: var(--info-100);
+            --clr-status-info-text: var(--info-200);
+            --clr-status-info-border: var(--info-600);
+
+            /* Success */
+            --clr-status-success-bg: var(--success-800);
+            --clr-status-success-text-primary: var(--success-100);
+            --clr-status-success-text: var(--success-200);
+            --clr-status-success-border: var(--success-600);
+
+            /* Warning */
+            --clr-status-warning-bg: var(--warning-800);
+            --clr-status-warning-text-primary: var(--warning-100);
+            --clr-status-warning-text: var(--warning-200);
+            --clr-status-warning-border: var(--warning-600);
+
+            /* Danger */
+            --clr-status-danger-bg: var(--danger-800);
+            --clr-status-danger-text-primary: var(--danger-100);
+            --clr-status-danger-text: var(--danger-200);
+            --clr-status-danger-border: var(--danger-600);
+
+            /* ── Links ── */
+            --clr-link-text: var(--primary-400);
+            --clr-link-text-hover: var(--primary-300);
+            --clr-link-text-visited: var(--primary-200);
+            --clr-link-text-active: var(--primary-200);
+
+            /* ── Scrollbar ── */
+            /* Stepped up the ramp to the lighter primaries, which is the way
+               this scheme buys contrast against a dark surface; the hover
+               steps further up, as it does in the light scheme. */
+            --clr-scrollbar-thumb: var(--primary-400);
+            --clr-scrollbar-thumb-hover: var(--primary-300);
+
+            /* ── Focus / Overlay / Shadow ── */
+            --clr-focus-ring: var(--primary-400);
+            --clr-overlay-bg: oklch(0 0 0 / 0.7);
+            --clr-shadow-color: oklch(1 0 360 / 0.3);
+        }
+    }
+}

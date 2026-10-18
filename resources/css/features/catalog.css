@@ -1,0 +1,370 @@
+@layer components {
+    /* =============================================
+       Catalog (category & listing pages)
+       ============================================= */
+    .catalog-header__description {
+        color: var(--clr-text-secondary);
+    }
+
+    .subcategories {
+        margin-block-end: var(--space-600);
+    }
+
+    .subcategories__title {
+        margin-block-end: var(--space-300);
+
+        font-size: var(--fs-100);
+        font-weight: var(--fw-semibold);
+        color: var(--clr-text-secondary);
+    }
+
+    .subcategories__list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-200);
+
+        list-style: none;
+    }
+
+    /* On the categories index the children follow the section header rather than
+       sitting inside it, so the header's own gap to them is the tighter one and
+       the chips carry the room to the grid below themselves. */
+    .category-section .section-header:has(+ .subcategories) {
+        margin-block-end: var(--space-300);
+    }
+
+    .catalog-layout {
+        --_filters-min: 220px;
+        --_filters-max: 260px;
+
+        display: grid;
+        gap: var(--space-600);
+        align-items: start;
+
+        @media (min-width: 900px) {
+            grid-template-columns:
+                minmax(var(--_filters-min), var(--_filters-max))
+                minmax(0, 1fr);
+        }
+    }
+
+    .catalog-results {
+        display: grid;
+        gap: var(--space-600);
+    }
+
+    /* ── Reading the next batch ── */
+    .catalog-loader {
+        display: grid;
+        justify-items: center;
+        align-content: center;
+        gap: var(--space-200);
+
+        /* Reserved, so the control and the spinner do not shift the page as
+           one gives way to the other. */
+        min-block-size: calc(var(--space-800) + var(--space-400));
+    }
+
+    /* Dimmed rather than removed while its batch is on its way, so the control
+       stays where the finger (or the scroll) expects it. */
+    .catalog-loader .is-loading {
+        pointer-events: none;
+        opacity: var(--opacity-loading);
+    }
+
+    .catalog-loader__status {
+        display: flex;
+        align-items: center;
+        gap: var(--space-200);
+
+        margin: 0;
+
+        font-size: var(--fs-050);
+        color: var(--clr-text-secondary);
+    }
+
+    .catalog-loader__spinner {
+        --_spin-duration: 700ms;
+
+        inline-size: var(--space-300);
+        block-size: var(--space-300);
+
+        border: var(--border-width-sm) solid var(--clr-border-subtle);
+        border-block-start-color: var(--clr-action-primary-bg);
+        border-radius: 50%;
+
+        animation: catalog-loader-spin var(--_spin-duration) linear infinite;
+    }
+
+    .catalog-loader--end {
+        color: var(--clr-text-muted);
+
+        text-align: center;
+    }
+
+    @keyframes catalog-loader-spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .catalog-loader__spinner {
+            animation: none;
+        }
+    }
+
+    .catalog-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--space-300) var(--space-400);
+    }
+
+    /* Search leads the row; sort is pushed to the inline-end. */
+    .catalog-toolbar .search-toolbar {
+        --_search-basis: 14rem;
+        --_search-max: 20rem;
+
+        flex: 1 1 var(--_search-basis);
+        max-inline-size: var(--_search-max);
+    }
+
+    .catalog-toolbar .catalog-sort {
+        margin-inline-start: auto;
+    }
+
+    .catalog-sort {
+        display: flex;
+        align-items: center;
+        gap: var(--space-200);
+    }
+
+    .catalog-sort__label {
+        font-size: var(--fs-050);
+        color: var(--clr-text-secondary);
+        white-space: nowrap;
+    }
+
+    .catalog-sort__select {
+        --_sort-select-min: 12rem;
+
+        min-inline-size: var(--_sort-select-min);
+    }
+
+    /* ── View toggle (grid / list) ── */
+    .catalog-view {
+        display: flex;
+        align-items: center;
+        gap: var(--space-200);
+    }
+
+    .catalog-view__label {
+        font-size: var(--fs-050);
+        color: var(--clr-text-secondary);
+        white-space: nowrap;
+    }
+
+    .catalog-view__options {
+        display: inline-flex;
+        overflow: hidden;
+
+        border: var(--border-width-xs) solid var(--clr-border-subtle);
+        border-radius: var(--border-radius-sm);
+        background-color: var(--clr-surface-elevated);
+    }
+
+    .catalog-view__option {
+        position: relative;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: var(--space-200);
+        cursor: pointer;
+
+        color: var(--clr-text-muted);
+
+        transition:
+            background-color var(--duration-animation-fast) ease,
+            color var(--duration-animation-fast) ease;
+
+        &:where(:hover, :focus-within) {
+            color: var(--clr-text-primary);
+        }
+
+        &:has(input:checked) {
+            background-color: var(--clr-action-primary-bg);
+            color: var(--clr-action-primary-text);
+        }
+    }
+
+    /* The chosen option is filled with the action colour, and the focus ring is
+       drawn in that same family — so a ring over the fill is blue on blue. The
+       ring goes around the option instead, inset (the group clips anything drawn
+       outside it), and steps to the page's opposite surface when the option is
+       the chosen, filled one — so it reads whichever option the keyboard is on. */
+    .catalog-view__option:has(input:focus-visible) {
+        outline: var(--border-width-sm) solid var(--clr-focus-ring);
+        outline-offset: calc(var(--border-width-sm) * -1);
+    }
+
+    .catalog-view__option:has(input:checked):has(input:focus-visible) {
+        outline-color: var(--clr-surface-inverse);
+    }
+
+    .catalog-view__icon {
+        inline-size: var(--fs-100);
+        block-size: var(--fs-100);
+    }
+
+    .product-list {
+        display: grid;
+        gap: var(--space-400);
+    }
+
+    .product-row {
+        --_thumb-inline: 5rem;
+
+        display: grid;
+        gap: var(--space-300) var(--space-400);
+        align-items: center;
+
+        padding: var(--space-400);
+
+        background-color: var(--clr-surface-card);
+        border: var(--border-width-xs) solid var(--clr-border-subtle);
+        border-radius: var(--border-radius-md);
+
+        grid-template-columns: var(--_thumb-inline) minmax(0, 1fr);
+        grid-template-areas:
+            "media info"
+            "price price"
+            "actions actions";
+    }
+
+    .product-row__media {
+        grid-area: media;
+        inline-size: var(--_thumb-inline);
+    }
+
+    .product-row__image {
+        inline-size: var(--_thumb-inline);
+        aspect-ratio: 1;
+        overflow: hidden;
+
+        background-color: var(--clr-surface-elevated);
+        border-radius: var(--border-radius-sm);
+
+        img {
+            inline-size: 100%;
+            block-size: 100%;
+            object-fit: contain;
+        }
+    }
+
+    .product-row__info {
+        grid-area: info;
+
+        display: grid;
+        gap: var(--space-100);
+        justify-items: start;
+        align-content: start;
+    }
+
+    .product-row__title {
+        font-weight: var(--fw-semibold);
+        color: var(--clr-link-text);
+        text-decoration: none;
+
+        &:where(:hover, :focus-visible) {
+            color: var(--clr-link-text-hover);
+        }
+    }
+
+    .product-row__meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-100) var(--space-300);
+
+        margin: 0;
+
+        font-size: var(--fs-050);
+        color: var(--clr-text-muted);
+    }
+
+    .product-row__price {
+        grid-area: price;
+    }
+
+    .product-row__actions {
+        grid-area: actions;
+
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    /* Wider screens: media | details | price | actions, like a cart line. */
+    @media (min-width: 900px) {
+        .product-row {
+            grid-template-columns:
+                var(--_thumb-inline) minmax(0, 1fr)
+                auto auto;
+            grid-template-areas: "media info price actions";
+        }
+
+        .product-row__price {
+            text-align: end;
+        }
+    }
+
+    /* Compact (single-column) layouts: drop the count and stack the controls,
+       search above the sort select. */
+    @media (max-width: 899.98px) {
+        .catalog-toolbar {
+            --_label-width: 5.5rem;
+        }
+
+        .catalog-toolbar__count {
+            display: none;
+        }
+
+        .catalog-toolbar .search-toolbar,
+        .catalog-toolbar .catalog-sort {
+            flex: 1 1 100%;
+            max-inline-size: none;
+            margin-inline-start: 0;
+        }
+
+        /* Labels left, controls right: both controls start and end on the
+           same edges. */
+        .catalog-toolbar .search-toolbar__label,
+        .catalog-toolbar .catalog-sort__label {
+            flex: 0 0 var(--_label-width);
+        }
+
+        .catalog-toolbar .search-toolbar__field,
+        .catalog-toolbar .catalog-sort__select {
+            flex: 1 1 auto;
+            min-inline-size: 0;
+        }
+
+        .catalog-toolbar .catalog-view {
+            flex: 1 1 100%;
+        }
+
+        .catalog-toolbar .catalog-view__label {
+            flex: 0 0 var(--_label-width);
+        }
+
+        .catalog-toolbar .catalog-view__options {
+            flex: 1 1 auto;
+            min-inline-size: 0;
+        }
+
+        .catalog-view__option {
+            flex: 1 1 auto;
+        }
+    }
+}

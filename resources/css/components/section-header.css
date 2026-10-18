@@ -1,0 +1,67 @@
+@layer components {
+    /* =============================================
+       Content Sections (categories & what's new)
+       ============================================= */
+    .content-section {
+        padding-block: calc(var(--space-800) + var(--space-400))
+            var(--space-400);
+    }
+
+    /* A product section is a rail, and rails stack: only the one that closes the
+       page keeps the room for the footer. */
+    .content-section--products:last-of-type {
+        padding-block-end: calc(var(--space-900) + var(--space-600));
+    }
+
+    /* A section's own band: a title, and — where a rail has more to show — the
+       link along it. `.section-title` is the heading inside; `.view-more` is
+       the link. Their boundaries: a section header never draws a page's own
+       title (that is the page-header block), and a page header never draws the
+       rail's link. */
+    .section-header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: var(--space-400);
+
+        margin-block-end: var(--space-600);
+    }
+
+    .section-title {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-200);
+
+        font-size: var(--fs-500);
+        font-weight: var(--fw-bold);
+        color: var(--clr-text-primary);
+    }
+
+    /* The mark over a section's title, drawn in the link colour so the title and
+       the way into it read as one thing. */
+    .section-title__icon {
+        flex: none;
+        color: var(--clr-link-text);
+    }
+
+    /* Section titles are visually subordinate to a page's h1. */
+    .section-title--sm {
+        font-size: var(--fs-300);
+    }
+
+    .view-more {
+        font-size: var(--fs-050);
+        font-weight: var(--fw-bold);
+        color: var(--clr-link-text);
+        text-decoration: underline;
+        white-space: nowrap;
+    }
+
+    /* On a narrow screen a long title and the "see all" link stack rather than
+       crowding each other on one line. */
+    @media (max-width: 700px) {
+        .section-header {
+            flex-wrap: wrap;
+        }
+    }
+}

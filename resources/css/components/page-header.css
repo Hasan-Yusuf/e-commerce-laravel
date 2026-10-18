@@ -1,0 +1,35 @@
+@layer components {
+    /* =============================================
+       Page header
+       =============================================
+       The band every page opens with: the page's title, the quiet line under it
+       (a subtitle, or the count of what the page holds), and — where a page
+       carries one — an action beside them. A page's own stylesheet keeps only
+       what is that page's own; the title and the line under it are named here
+       once. */
+
+    /* The band, and the title-with-its-line stack inside a band that also
+       carries an action beside it. */
+    .page-header,
+    .page-header__heading {
+        display: grid;
+        gap: var(--space-200);
+    }
+
+    /* A page's opening band stands off whatever follows it. */
+    .page-header--spaced {
+        margin-block-end: var(--space-600);
+    }
+
+    .page-header__title {
+        font-size: var(--fs-500);
+        font-weight: var(--fw-bold);
+        color: var(--clr-text-primary);
+    }
+
+    /* The line under the title: a subtitle, or the count of what is shown. */
+    .page-header__subtitle {
+        font-size: var(--fs-050);
+        color: var(--clr-text-muted);
+    }
+}

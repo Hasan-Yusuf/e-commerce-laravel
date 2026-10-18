@@ -1,0 +1,63 @@
+@layer components {
+    /* =============================================
+       Separator
+       =============================================
+       A rule between two blocks, drawn with a pseudo-element so it can be
+       dashed and can carry a label. Its direction is a modifier on the block,
+       like every other part of the storefront. */
+    .separator {
+        --_color: var(--clr-border-strong);
+        --_space: var(--space-400);
+
+        --_space-start: var(--_space);
+        --_space-end: var(--_space);
+
+        background-color: var(--_color);
+        border: none;
+
+        position: relative;
+        isolation: isolate;
+        flex-shrink: 0;
+
+        &.separator--vertical {
+            inline-size: var(--_thickness, var(--border-width-md));
+            block-size: 100%;
+            margin-inline: var(--_space-start) var(--_space-end);
+        }
+
+        &.separator--horizontal {
+            inline-size: 100%;
+            block-size: var(--_thickness, var(--border-width-md));
+            margin-block: var(--_space-start) var(--_space-end);
+        }
+
+        &.separator--dashed {
+            background: none;
+
+            &::before {
+                content: "";
+                position: absolute;
+            }
+
+            &.separator--vertical::before {
+                left: 50%;
+                top: 0;
+                bottom: 0;
+                transform: translateX(-50%);
+                inline-size: var(--_thickness, var(--border-width-md));
+                border-left: var(--_thickness, var(--border-width-md)) dashed
+                    var(--_color);
+            }
+
+            &.separator--horizontal::before {
+                top: 50%;
+                left: 0;
+                right: 0;
+                transform: translateY(-50%);
+                block-size: var(--_thickness, var(--border-width-md));
+                border-top: var(--_thickness, var(--border-width-md)) dashed
+                    var(--_color);
+            }
+        }
+    }
+}

@@ -1,0 +1,50 @@
+@layer components {
+    .breadcrumbs {
+        padding-block-start: var(--space-500);
+    }
+
+    /* Whatever the page opens with stands clear of the trail: a first block that
+       carries no top spacing of its own — the checkout — would otherwise start
+       flush under the breadcrumb. A block that spaces itself (a
+       `.content-section`) keeps its own distance instead. */
+    .breadcrumbs + :not(.content-section) {
+        margin-block-start: var(--space-600);
+    }
+
+    .breadcrumbs__list {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--space-100) var(--space-200);
+
+        list-style: none;
+
+        font-size: var(--fs-050);
+    }
+
+    .breadcrumbs__item {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-200);
+    }
+
+    .breadcrumbs__item + .breadcrumbs__item::before {
+        content: "/";
+        color: var(--clr-text-muted);
+    }
+
+    .breadcrumbs__link {
+        color: var(--clr-text-secondary);
+        text-decoration: none;
+
+        &:where(:hover, :focus-visible) {
+            color: var(--clr-link-text);
+            text-decoration: underline;
+        }
+    }
+
+    .breadcrumbs__current {
+        color: var(--clr-text-primary);
+        font-weight: var(--fw-medium);
+    }
+}

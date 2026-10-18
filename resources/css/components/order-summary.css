@@ -1,0 +1,55 @@
+@layer components {
+    /* =============================================
+       Order summary
+       =============================================
+       What an order holds, read back the same way wherever an order is shown:
+       the confirmation straight after placing it, and the order details. The
+       card, its surface and its spacing are the shared .card component's; the
+       totals are the shared .summary, the items the shared .line-item. */
+    .order-summary {
+        --_card-bg: var(--clr-surface-elevated);
+        --_card-padding: var(--space-500);
+        --_card-gap: var(--space-400);
+
+        /* The order's own rows read a step quieter than the card's text. */
+        --_summary-row-font-size: var(--fs-050);
+    }
+
+    .order-summary__title {
+        font-size: var(--fs-200);
+        font-weight: var(--fw-semibold);
+        color: var(--clr-text-primary);
+    }
+
+    .order-summary__items {
+        display: grid;
+        gap: var(--space-300);
+
+        margin: 0;
+        padding: 0;
+
+        list-style: none;
+    }
+
+    .order-summary__block {
+        display: grid;
+        gap: var(--space-100);
+    }
+
+    .order-summary__block-title {
+        font-size: var(--fs-050);
+        font-weight: var(--fw-semibold);
+        color: var(--clr-text-primary);
+    }
+
+    .order-summary__line {
+        font-size: var(--fs-050);
+        color: var(--clr-text-secondary);
+    }
+
+    /* A note is written on a few lines, and reads back on the lines it was
+       written on rather than run together. */
+    .order-summary__line--note {
+        white-space: pre-line;
+    }
+}

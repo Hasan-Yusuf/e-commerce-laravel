@@ -1,0 +1,29 @@
+@layer components {
+    /* =============================================
+       Address form
+       =============================================
+       The address fields, as the checkout's shipping step and the account's
+       profile both render them. One column on a phone; from 600px two, with the
+       street address (and any other wide field) owning a full row of its own. */
+    .address-form {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--space-400);
+    }
+
+    @media (min-width: 600px) {
+        .address-form {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .address-form__wide {
+            --_column-span: 2;
+        }
+    }
+
+    /* A checkbox is a choice, not a field: it keeps the plain checkbox look
+       rather than the box the fields around it carry. */
+    .address-form__save {
+        --_gap: var(--space-200);
+    }
+}

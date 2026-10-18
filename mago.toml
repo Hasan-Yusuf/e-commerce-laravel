@@ -1,0 +1,146 @@
+#:schema https://mago.carthage.software/1.51.2/schema.json
+# Welcome to Mago!
+# For full documentation, see https://mago.carthage.software/1.51.2/en/tools/overview/
+version = "1"
+php-version = "8.3.0"
+
+[source]
+workspace = "."
+paths = ["app/", "database/factories/", "database/seeders/", "tests/"]
+includes = ["vendor"]
+excludes = []
+
+[source.glob]
+literal-separator = true
+
+[formatter]
+preset = "pint"
+
+[linter]
+integrations = ["laravel", "phpunit"]
+
+[linter.rules]
+ambiguous-function-call = { enabled = false }
+literal-named-argument = { enabled = false }
+halstead = { effort-threshold = 7000 }
+
+# Eloquent models, Filament resources, DTOs, enums, test classes, factories and
+# seeders routinely exceed the method-count threshold by design. "Split into
+# smaller classes" is not a useful recommendation for these Laravel idioms.
+too-many-methods = { enabled = false }
+
+# DTOs, Filament value objects and service constructors take many constructor
+# parameters by design (promoted readonly properties / dependency injection).
+# Exempt constructors from the parameter-count limit; method checks stay active.
+excessive-parameter-list = { constructor-threshold = 20 }
+
+# Test fixtures use literal `'password' => 'password'` values and Eloquent
+# `casts()` uses `'password' => 'hashed'`. Neither is a hard-coded secret.
+no-literal-password = { exclude = ["tests/**", "app/Models/**"] }
+
+# Model factories use closures to defer Faker evaluation per record; the
+# "make this closure static" suggestion is noise there.
+prefer-static-closure = { exclude = ["database/factories/**"] }
+
+# Test classes with many test methods trivially trip these complexity/defect
+# metrics; "reduce complexity" does not apply to a class that is only a list
+# of test cases.
+cyclomatic-complexity = { exclude = ["tests/**"] }
+kan-defect = { exclude = ["tests/**"] }
+
+[analyzer]
+plugins = []
+find-unused-definitions = false
+find-unused-expressions = false
+analyze-dead-code = false
+memoize-properties = true
+allow-possibly-undefined-array-keys = true
+check-throws = false
+unchecked-exceptions = ["Error", "LogicException"]
+unchecked-exception-classes = []
+check-missing-override = false
+find-unused-parameters = false
+strict-list-index-checks = false
+strict-array-index-existence = false
+allow-array-truthy-operand = false
+no-boolean-literal-comparison = false
+check-missing-type-hints = false
+register-super-globals = true
+
+# Mago's analyzer has no Laravel awareness, so it treats framework dynamic typing
+# (facades, Eloquent magic, the container, translation/factory helpers) as
+# `mixed`, null, or generic unions and flags every use. These are the
+# Laravel/Filament boundaries where the recommendation does not help.
+ignore = [
+    # Eloquent models, relations and builders resolve attributes, accessors,
+    # scopes and forwarded methods through __get/__call/__callStatic, which the
+    # analyzer cannot see without @property/@method docblocks on every model.
+    "non-documented-method",
+    "non-documented-property",
+    "dynamic-static-method-call",
+    "too-few-arguments",
+
+    # Facades are interfaces whose methods resolve via __callStatic.
+    "static-access-on-interface",
+    "invalid-static-method-access",
+
+    # Macros and mixins (Spatie Media Library, custom macros) define methods at
+    # runtime, so "this method does not exist" is a false positive in Laravel.
+    "non-existent-method",
+
+    # A trait that forwards to the method it overrides uses `parent::`, which the
+    # analyzer reads against the trait itself — a trait has no parent, but the
+    # classes using it do (see HasInfoRelations, which overrides Filament page
+    # hooks that every using page inherits from ViewRecord).
+    "invalid-parent-type",
+
+    # The container, request input, config and Eloquent magic all yield `mixed`,
+    # and every downstream use is flagged as "mixed is too general".
+    "mixed-argument",
+    "mixed-method-access",
+    "mixed-assignment",
+    "mixed-property-access",
+    "mixed-return-statement",
+    "mixed-operand",
+    "mixed-array-access",
+
+    # find(), first(), get(), Arr::get() and auth() return T|null|false, so the
+    # "possibly null/false" family fires on every one of those boundaries.
+    "possibly-invalid-argument",
+    "possibly-false-argument",
+    "possibly-null-argument",
+    "possibly-null-property-access",
+    "possibly-null-operand",
+    "possibly-null-array-access",
+    "possibly-null-array-index",
+    "possibly-false-operand",
+    "possible-method-access-on-null",
+
+    # Eloquent builders/collections are generic, factory()->create() returns
+    # Model|Collection and __() returns string|array, so exact variance cannot
+    # be tracked and these return/argument checks are noise.
+    "less-specific-return-statement",
+    "less-specific-nested-argument-type",
+    "less-specific-nested-return-statement",
+    "invalid-return-statement",
+    "invalid-argument",
+    "invalid-property-assignment-value",
+
+    # Eloquent methods (increment), testing helpers (artisan()), helpers (str())
+    # and JSON-cast attributes are mis-inferred (protected/int/object/mixed), so
+    # access, array-key, spread, operand and coercion checks are false positives.
+    "invalid-method-access",
+    "invalid-property-write",
+    "invalid-array-element-key",
+    "invalid-array-element",
+    "invalid-destructuring-source",
+    "invalid-operand",
+    "invalid-type-cast",
+    "property-type-coercion",
+    "ambiguous-object-method-access",
+
+    # __() translation strings concatenated as text, and Eloquent collections
+    # iterated with foreach, trip these warnings even though the code is correct.
+    "array-to-string-conversion",
+    "non-iterable-object-iteration",
+]

@@ -1,0 +1,138 @@
+@layer components {
+    /* =============================================
+       Checkout page
+       ============================================= */
+    /* The stepper itself is the global checkout-step component; on this page it
+       is the page's own header, so it keeps the flow's spacing. */
+    .checkout-steps {
+        margin-block-end: var(--space-600);
+    }
+
+    .checkout-layout__main {
+        --_main-basis: 40rem;
+
+        flex: 100 1 var(--_main-basis);
+        min-inline-size: 0;
+    }
+
+    .checkout-form {
+        display: grid;
+        gap: var(--space-500);
+    }
+
+    /* The step's own grid spaces the buttons, so the shared actions row only
+       has to keep laying them out. */
+    .checkout-form .form-actions {
+        padding: 0;
+    }
+
+    /* The number and the calling code it is given for sit on one line: the code
+       is a short prefix, the number the field that fills the rest. */
+    .checkout-form__phone {
+        --_code-min: 5rem;
+        --_code-max: 7rem;
+
+        display: grid;
+        grid-template-columns:
+            minmax(var(--_code-min), var(--_code-max))
+            minmax(0, 1fr);
+        gap: var(--space-300);
+        align-items: start;
+    }
+
+    /* ── Review ──
+       Every block restates one answer, so the blocks read as a list of rows
+       rather than a grid of cards: one line apiece, carrying the step it
+       restates, what was answered and the way back to editing it. The rows keep
+       their own card, drawn tighter and quieter than the step shell, so the
+       review reads as a summary rather than a second form. */
+    .review-blocks {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--space-300);
+        align-items: start;
+    }
+
+    /* The items are a list of what is being bought, so they own the full row;
+       the sign-in prompt, the stock warning and the place-order action close
+       the page. */
+    .review-block--wide,
+    .review-blocks > .alert,
+    .review-blocks > .review-signin,
+    .review-blocks > .checkout-form {
+        grid-column: 1 / -1;
+    }
+
+    .review-block {
+        --_card-bg: var(--clr-surface-elevated);
+        --_card-padding: var(--space-400) var(--space-500);
+        --_card-gap: var(--space-200);
+
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-areas:
+            "head actions"
+            "body body";
+        gap: var(--space-200) var(--space-400);
+        align-items: start;
+    }
+
+    .review-block > .checkout-step__header {
+        grid-area: head;
+    }
+
+    .review-block__body {
+        grid-area: body;
+
+        display: grid;
+        gap: var(--space-200);
+    }
+
+    .review-block__line {
+        font-size: var(--fs-050);
+        color: var(--clr-text-secondary);
+    }
+
+    .review-block__actions {
+        grid-area: actions;
+
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    /* Every block keeps the two-row template at all widths: the step it restates
+       and the button that reopens it on the first line, and its answer on a full
+       line under them. Placing the answer in a middle column beside the head —
+       what a wide screen used to do — leaves it too narrow to read. */
+
+    .review-items {
+        display: grid;
+        gap: var(--space-300);
+
+        list-style: none;
+        padding: 0;
+    }
+
+    /* ── Sign-in prompt on the review (guests) ── */
+    .review-signin {
+        display: grid;
+        gap: var(--space-300);
+
+        padding: var(--space-400);
+
+        background-color: var(--clr-status-info-bg);
+        border: var(--border-width-xs) solid var(--clr-status-info-border);
+        border-radius: var(--border-radius-sm);
+    }
+
+    .review-signin__notice {
+        font-size: var(--fs-050);
+        color: var(--clr-status-info-text-primary);
+    }
+
+    .review-signin__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-200);
+    }
+}

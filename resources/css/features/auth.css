@@ -1,0 +1,42 @@
+@layer components {
+    /* =============================================
+       Auth pages (login, register, forgot password)
+       ============================================= */
+    .auth-page {
+        display: grid;
+        place-items: center;
+
+        padding-block: var(--space-800);
+    }
+
+    .auth-card {
+        --_card-inline: 28rem;
+
+        inline-size: min(100%, var(--_card-inline));
+    }
+
+    .auth-card__subtitle,
+    .auth-card__message {
+        font-size: var(--fs-100);
+        color: var(--clr-text-secondary);
+    }
+
+    .auth-card__footer {
+        padding-block-start: var(--space-400);
+
+        border-block-start: var(--border-width-xs) solid
+            var(--clr-border-subtle);
+
+        font-size: var(--fs-100);
+        color: var(--clr-text-secondary);
+    }
+
+    /* "Don't have an account? Signup" — wraps when the labels are long. */
+    .auth-card__alt {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-100) var(--space-200);
+        align-items: baseline;
+        justify-content: center;
+    }
+}

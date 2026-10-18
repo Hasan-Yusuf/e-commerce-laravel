@@ -1,0 +1,93 @@
+@layer components {
+    /* =============================================
+       Alerts
+       =============================================
+       A message with its status colour, its icon and its actions. */
+    .alert {
+        --_clr-surface: var(--clr-surface-card);
+        --_clr-header: var(--clr-text-primary);
+        --_clr-body: var(--clr-text-secondary);
+        --_clr-border: var(--clr-border-subtle);
+        --_clr-shadow: var(--shadow-subtle);
+
+        display: grid;
+        gap: var(--space-300);
+
+        padding: var(--space-300) var(--space-400);
+
+        background: var(--_clr-surface);
+
+        border: var(--border-width-md) solid var(--_clr-border);
+        border-radius: var(--border-radius-md);
+        box-shadow: var(--_clr-shadow);
+
+        .alert__header {
+            display: flex;
+            align-items: center;
+
+            gap: var(--space-200);
+
+            font-family: var(--ff-accent);
+            font-weight: var(--fw-semibold);
+            color: var(--_clr-header);
+        }
+
+        .alert__body {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-100);
+
+            color: var(--_clr-body);
+        }
+
+        .alert__actions {
+            display: flex;
+            gap: var(--space-200);
+        }
+
+        &.alert--info {
+            --_clr-surface: var(--clr-status-info-bg);
+            --_clr-header: var(--clr-status-info-text-primary);
+            --_clr-body: var(--clr-status-info-text);
+            --_clr-border: var(--clr-status-info-border);
+        }
+
+        &.alert--success {
+            --_clr-surface: var(--clr-status-success-bg);
+            --_clr-header: var(--clr-status-success-text-primary);
+            --_clr-body: var(--clr-status-success-text);
+            --_clr-border: var(--clr-status-success-border);
+        }
+
+        &.alert--warning {
+            --_clr-surface: var(--clr-status-warning-bg);
+            --_clr-header: var(--clr-status-warning-text-primary);
+            --_clr-body: var(--clr-status-warning-text);
+            --_clr-border: var(--clr-status-warning-border);
+        }
+
+        &.alert--danger {
+            --_clr-surface: var(--clr-status-danger-bg);
+            --_clr-header: var(--clr-status-danger-text-primary);
+            --_clr-body: var(--clr-status-danger-text);
+            --_clr-border: var(--clr-status-danger-border);
+        }
+
+        .alert__icon {
+            flex-shrink: 0;
+
+            inline-size: var(--fs-200);
+            block-size: var(--fs-200);
+        }
+
+        .alert__title {
+            font-family: var(--ff-accent);
+            font-weight: var(--fw-semibold);
+        }
+    }
+
+    /* Page-level flash/validation alert, rendered under the header. */
+    .page-alert {
+        margin-block-start: var(--space-400);
+    }
+}

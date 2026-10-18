@@ -1,0 +1,184 @@
+@layer components {
+    /* =============================================
+       Toast notifications (bottom inline-end)
+       ============================================= */
+    .toast-stack {
+        --_stack-inline: 22rem;
+
+        position: fixed;
+        inset-block-end: var(--space-400);
+        inset-inline-end: var(--space-400);
+        z-index: var(--z-toast);
+
+        display: grid;
+        gap: var(--space-200);
+
+        inline-size: min(
+            var(--_stack-inline),
+            calc(100cqi - (var(--space-400) * 2))
+        );
+
+        pointer-events: none;
+    }
+
+    .toast {
+        --_clr-surface: var(--clr-surface-card);
+        --_clr-border: var(--clr-border-subtle);
+        --_clr-title: var(--clr-text-primary);
+        --_clr-body: var(--clr-text-secondary);
+        --_clr-progress: var(--clr-action-primary-bg);
+
+        position: relative;
+        overflow: hidden;
+
+        display: grid;
+        gap: var(--space-200);
+
+        padding: var(--space-300) var(--space-400) var(--space-400);
+
+        background: var(--_clr-surface);
+        border: var(--border-width-md) solid var(--_clr-border);
+        border-radius: var(--border-radius-md);
+        box-shadow: var(--shadow-md);
+
+        pointer-events: auto;
+
+        animation: toast-in var(--duration-animation-fast) ease-out;
+
+        &.toast--success {
+            --_clr-surface: var(--clr-status-success-bg);
+            --_clr-border: var(--clr-status-success-border);
+            --_clr-title: var(--clr-status-success-text-primary);
+            --_clr-body: var(--clr-status-success-text);
+            --_clr-progress: var(--clr-status-success-text-primary);
+        }
+
+        &.toast--warning {
+            --_clr-surface: var(--clr-status-warning-bg);
+            --_clr-border: var(--clr-status-warning-border);
+            --_clr-title: var(--clr-status-warning-text-primary);
+            --_clr-body: var(--clr-status-warning-text);
+            --_clr-progress: var(--clr-status-warning-text-primary);
+        }
+
+        &.toast--danger {
+            --_clr-surface: var(--clr-status-danger-bg);
+            --_clr-border: var(--clr-status-danger-border);
+            --_clr-title: var(--clr-status-danger-text-primary);
+            --_clr-body: var(--clr-status-danger-text);
+            --_clr-progress: var(--clr-status-danger-text-primary);
+        }
+
+        &.toast--info {
+            --_clr-surface: var(--clr-status-info-bg);
+            --_clr-border: var(--clr-status-info-border);
+            --_clr-title: var(--clr-status-info-text-primary);
+            --_clr-body: var(--clr-status-info-text);
+            --_clr-progress: var(--clr-status-info-text-primary);
+        }
+    }
+
+    .toast__header {
+        display: flex;
+        align-items: center;
+        gap: var(--space-200);
+    }
+
+    .toast__icon {
+        flex-shrink: 0;
+
+        inline-size: var(--fs-200);
+        block-size: var(--fs-200);
+
+        color: var(--_clr-title);
+    }
+
+    .toast__title {
+        flex: 1;
+
+        font-family: var(--ff-accent);
+        font-weight: var(--fw-semibold);
+        color: var(--_clr-title);
+    }
+
+    .toast__close {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+
+        inline-size: var(--space-700);
+        block-size: var(--space-700);
+
+        border: none;
+        border-radius: var(--border-radius-xs);
+
+        background: transparent;
+        color: var(--_clr-title);
+
+        cursor: pointer;
+        opacity: var(--opacity-subdued);
+
+        &:where(:hover, :focus-visible) {
+            opacity: 1;
+        }
+    }
+
+    .toast__close-icon {
+        inline-size: var(--fs-100);
+        block-size: var(--fs-100);
+    }
+
+    .toast__body {
+        font-size: var(--fs-050);
+        color: var(--_clr-body);
+    }
+
+    .toast__progress {
+        position: absolute;
+        inset-inline: 0;
+        inset-block-end: 0;
+
+        block-size: var(--border-width-md);
+
+        background: var(--_clr-progress);
+
+        transform-origin: left;
+
+        animation-name: toast-progress;
+        animation-timing-function: linear;
+        animation-fill-mode: forwards;
+    }
+
+    html[dir="rtl"] .toast__progress {
+        transform-origin: right;
+    }
+
+    @keyframes toast-in {
+        from {
+            opacity: 0;
+            transform: translateY(var(--space-200));
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes toast-progress {
+        from {
+            transform: scaleX(1);
+        }
+
+        to {
+            transform: scaleX(0);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .toast {
+            animation: none;
+        }
+    }
+}

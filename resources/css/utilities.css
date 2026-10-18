@@ -1,0 +1,138 @@
+@layer utilities {
+    .wrapper {
+        --_raw-max-width: 1200px;
+
+        --_max-width: calc(var(--_raw-max-width) - (var(--space-400) * 2));
+
+        max-width: min(var(--_max-width), 100% - (var(--space-400) * 2));
+        margin-inline: auto;
+    }
+
+    /* Wide variant for the full-bleed chrome (the site header, the footer) and
+       for the catalogue: a listing is a column of filters beside a grid of
+       products, and both are worth the room when the screen has it. */
+    .wrapper--wide {
+        --_raw-max-width: 1600px;
+    }
+
+    .ff-accent {
+        font-family: var(--ff-accent);
+    }
+
+    .ff-base {
+        font-family: var(--ff-base);
+    }
+
+    .fs-000 {
+        font-size: var(--fs-000);
+    }
+    .fs-050 {
+        font-size: var(--fs-050);
+    }
+    .fs-100 {
+        font-size: var(--fs-100);
+    }
+    .fs-200 {
+        font-size: var(--fs-200);
+    }
+    .fs-300 {
+        font-size: var(--fs-300);
+    }
+    .fs-400 {
+        font-size: var(--fs-400);
+    }
+    .fs-500 {
+        font-size: var(--fs-500);
+    }
+    .fs-600 {
+        font-size: var(--fs-600);
+    }
+    .fs-700 {
+        font-size: var(--fs-700);
+    }
+    .fs-800 {
+        font-size: var(--fs-800);
+    }
+    .fs-900 {
+        font-size: var(--fs-900);
+    }
+
+    .fw-light {
+        font-weight: var(--fw-light);
+    }
+
+    .fw-regular {
+        font-weight: var(--fw-regular);
+    }
+
+    .fw-medium {
+        font-weight: var(--fw-medium);
+    }
+
+    .fw-semibold {
+        font-weight: var(--fw-semibold);
+    }
+
+    .fw-bold {
+        font-weight: var(--fw-bold);
+    }
+
+    .text-primary {
+        color: var(--clr-text-primary);
+    }
+
+    .grid {
+        display: grid;
+        gap: var(--_gap, var(--space-400));
+    }
+
+    .grid-split {
+        grid-template-columns: minmax(auto, 1fr);
+    }
+
+    @media (min-width: 600px) {
+        .grid-split {
+            grid-template-columns: repeat(2, minmax(auto, 1fr));
+        }
+    }
+
+    /* Centres an item in the middle of its grid cell, both axes. The parent has
+       to be a grid — the page shell makes <main> one for the pages that use
+       this (components/layout.css), and most items otherwise fill their cell from the
+       start. `safe` keeps an item that is taller than its cell reachable from
+       the top; browsers without it keep the plain centring above. */
+    .grid-center {
+        place-self: center;
+        place-self: safe center;
+    }
+
+    .flex {
+        display: flex;
+        gap: var(--_gap, var(--space-400));
+    }
+
+    .visually-hidden {
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+        height: 1px;
+        overflow: hidden;
+        position: absolute;
+        white-space: nowrap;
+        width: 1px;
+    }
+
+    .text-no-decor {
+        text-decoration: none;
+    }
+}
+
+/* Progressive enhancement (unlayered so it overrides layered component styles):
+   .js-only is hidden when scripting is unavailable; .no-js-only fallbacks are
+   hidden as soon as JS takes over. */
+.no-js .js-only {
+    display: none;
+}
+
+.js .no-js-only {
+    display: none;
+}

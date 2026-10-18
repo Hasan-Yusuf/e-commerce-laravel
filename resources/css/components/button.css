@@ -1,0 +1,152 @@
+@layer components {
+    /* =============================================
+       Buttons
+       =============================================
+       One control, seven voices: every action on the storefront is the same
+       box painted from the action tokens its variant names. */
+    .btn {
+        --_clr-surface: var(--clr-action-primary-bg);
+        --_clr-text: var(--clr-action-primary-text);
+        --_clr-border: var(--clr-action-primary-border);
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-100);
+
+        cursor: pointer;
+
+        text-decoration: none;
+        font-weight: var(--fw-medium);
+
+        background: var(--_clr-surface);
+        color: var(--_clr-text);
+        border: var(--border-width-sm) solid var(--_clr-border);
+
+        padding: var(--space-200) var(--space-300);
+
+        border-radius: var(--border-radius-sm);
+
+        &:hover {
+            --_clr-surface: var(--clr-action-primary-bg-hover);
+        }
+
+        /* The ring is the focus colour rather than the button's own: a button
+           painted from a variant, ringed in that same variant's surface, is
+           ringed in what it already is. */
+        &:focus-visible {
+            outline: var(--border-width-sm) solid var(--clr-focus-ring);
+            outline-offset: var(--border-width-xs);
+        }
+
+        &.btn--secondary {
+            --_clr-surface: var(--clr-action-secondary-bg);
+            --_clr-text: var(--clr-action-secondary-text);
+            --_clr-border: var(--clr-action-secondary-border);
+
+            &:where(:hover, :focus-visible) {
+                --_clr-surface: var(--clr-action-secondary-bg-hover);
+                --_clr-border: var(--clr-action-secondary-border);
+            }
+        }
+
+        &.btn--tertiary {
+            --_clr-surface: var(--clr-action-tertiary-bg);
+            --_clr-text: var(--clr-action-tertiary-text);
+            --_clr-border: var(--clr-action-tertiary-border);
+
+            &:where(:hover, :focus-visible) {
+                --_clr-surface: var(--clr-action-tertiary-bg-hover);
+                --_clr-border: var(--clr-action-tertiary-border);
+            }
+        }
+
+        &.btn--ghost {
+            --_clr-surface: transparent;
+            --_clr-border: transparent;
+            --_clr-text: var(--clr-action-tertiary-text);
+
+            padding: var(--space-100) var(--space-100);
+
+            transition: text-decoration;
+
+            transition-duration: var(--duration-animation-default);
+
+            &:hover {
+                --_clr-text: var(--clr-action-tertiary-text-hover);
+                text-decoration: underline;
+            }
+        }
+
+        &.btn--success {
+            --_clr-surface: var(--clr-action-success-bg);
+            --_clr-text: var(--clr-action-success-text);
+            --_clr-border: var(--clr-action-success-border);
+
+            &:where(:hover, :focus-visible) {
+                --_clr-surface: var(--clr-action-success-bg-hover);
+            }
+        }
+
+        &.btn--warning {
+            --_clr-surface: var(--clr-action-warning-bg);
+            --_clr-text: var(--clr-action-warning-text);
+            --_clr-border: var(--clr-action-warning-border);
+
+            &:where(:hover, :focus-visible) {
+                --_clr-surface: var(--clr-action-warning-bg-hover);
+            }
+        }
+
+        &.btn--danger {
+            --_clr-surface: var(--clr-action-danger-bg);
+            --_clr-text: var(--clr-action-danger-text);
+            --_clr-border: var(--clr-action-danger-border);
+
+            &:where(:hover, :focus-visible) {
+                --_clr-surface: var(--clr-action-danger-bg-hover);
+            }
+        }
+
+        &:disabled {
+            --_clr-surface: var(--clr-action-disabled-bg);
+            --_clr-text: var(--clr-action-disabled-text);
+            --_clr-border: none;
+
+            &:where(:hover, :focus-visible) {
+                --_clr-surface: color-mix(
+                    in oklch,
+                    var(--clr-action-disabled-bg),
+                    transparent var(--clr-action-disabled-percentage)
+                );
+            }
+        }
+
+        /* Full-width: the control fills the row it is the action of. */
+        &.btn--block {
+            inline-size: 100%;
+        }
+
+        /* Compact, e.g. subcategory links. */
+        &.btn--sm {
+            padding: var(--space-100) var(--space-300);
+
+            border-width: var(--border-width-xs);
+            font-size: var(--fs-050);
+        }
+
+        /* Square icon-only action (wishlist toggle, remove, …), so every one of
+           them is the same box with the same icon size. */
+        &.btn--icon {
+            inline-size: var(--size-icon-button);
+            block-size: var(--size-icon-button);
+
+            padding: 0;
+
+            > svg {
+                inline-size: var(--fs-200);
+                block-size: var(--fs-200);
+            }
+        }
+    }
+}

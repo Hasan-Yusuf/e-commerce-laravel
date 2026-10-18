@@ -1,0 +1,71 @@
+@layer components {
+    /* =============================================
+       Quantity selector (PDP + cart)
+       ============================================= */
+    .quantity-selector {
+        display: inline-flex;
+        align-items: center;
+
+        inline-size: fit-content;
+        overflow: hidden;
+
+        background-color: var(--clr-surface-card);
+        border: var(--border-width-xs) solid var(--clr-border-subtle);
+        border-radius: var(--border-radius-sm);
+    }
+
+    .quantity-selector__button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        min-inline-size: var(--size-touch-target);
+        min-block-size: var(--size-touch-target);
+
+        border: none;
+        border-radius: 0;
+
+        background: transparent;
+        color: var(--clr-text-primary);
+
+        font-size: var(--fs-200);
+
+        cursor: pointer;
+
+        &:where(:hover, :focus-visible) {
+            background-color: var(--clr-surface-elevated);
+        }
+    }
+
+    .quantity-selector__input {
+        --_input-inline: 4rem;
+
+        inline-size: var(--_input-inline);
+
+        border: none;
+        border-radius: 0;
+
+        background: transparent;
+        text-align: center;
+    }
+
+    /* Hide the native number spinners; the buttons replace them. */
+    .quantity-selector__input::-webkit-outer-spin-button,
+    .quantity-selector__input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .quantity-selector__input[type="number"] {
+        -moz-appearance: textfield;
+        appearance: textfield;
+    }
+
+    /* The controls stand edge to edge inside a box that clips them to its own
+       rounded shape, so each draws its ring inside itself: a ring around one
+       would be cut off by the box it fills. */
+    .quantity-selector__button:focus-visible,
+    .quantity-selector__input:focus-visible {
+        outline-offset: calc(var(--border-width-sm) * -1);
+    }
+}

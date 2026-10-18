@@ -1,0 +1,187 @@
+@layer components {
+    /* =============================================
+       Auth modal (login + register side by side)
+       ============================================= */
+    .auth-modal {
+        --_inset-fluid: 4cqi;
+
+        position: fixed;
+        inset: 0;
+        z-index: var(--z-modal);
+
+        display: grid;
+        place-items: center;
+
+        padding: clamp(var(--space-200), var(--_inset-fluid), var(--space-400));
+        overflow-y: auto;
+    }
+
+    .auth-modal[hidden] {
+        display: none;
+    }
+
+    .auth-modal__overlay {
+        position: fixed;
+        inset: 0;
+
+        background-color: var(--clr-overlay-bg);
+    }
+
+    .auth-modal__dialog {
+        --_inset-fluid: 5cqi;
+        --_max-block-size: 95vh;
+        --_dialog-inline: 960px;
+
+        position: relative;
+        z-index: var(--z-raised);
+
+        inline-size: min(var(--_dialog-inline), 100%);
+        max-block-size: var(--_max-block-size);
+        overflow-y: auto;
+
+        padding: clamp(var(--space-500), var(--_inset-fluid), var(--space-600));
+
+        background-color: var(--clr-surface-card);
+        border: var(--border-width-xs) solid var(--clr-border-subtle);
+        border-radius: var(--border-radius-lg);
+        box-shadow: var(--shadow-strong);
+
+        /* The panels below respond to the dialog's own width, not the
+           viewport, so the modal stays two-up in any wide container. */
+        container-type: inline-size;
+    }
+
+    .auth-modal__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-300);
+
+        margin-block-end: var(--space-500);
+    }
+
+    .auth-modal__title {
+        font-size: var(--fs-400);
+        font-weight: var(--fw-bold);
+        color: var(--clr-text-primary);
+    }
+
+    .auth-modal__close {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        min-block-size: var(--size-touch-target);
+        min-inline-size: var(--size-touch-target);
+        padding: var(--space-200);
+
+        border: none;
+        border-radius: var(--border-radius-xs);
+
+        background: none;
+        color: var(--clr-text-secondary);
+
+        cursor: pointer;
+
+        &:where(:hover, :focus-visible) {
+            color: var(--clr-text-primary);
+            background-color: var(--clr-action-tertiary-bg-hover);
+        }
+    }
+
+    .auth-modal__close-icon {
+        inline-size: var(--fs-200);
+        aspect-ratio: 1;
+    }
+
+    .auth-modal__notice {
+        margin-block-end: var(--space-500);
+        padding: var(--space-200) var(--space-300);
+
+        border: var(--border-width-xs) solid var(--clr-status-info-border);
+        border-radius: var(--border-radius-sm);
+
+        background-color: var(--clr-status-info-bg);
+        color: var(--clr-status-info-text);
+
+        font-size: var(--fs-050);
+    }
+
+    .auth-modal__panels {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--space-600);
+    }
+
+    .auth-panel__title {
+        margin-block-end: var(--space-400);
+
+        font-size: var(--fs-300);
+        font-weight: var(--fw-semibold);
+        color: var(--clr-text-primary);
+    }
+
+    .auth-form {
+        /* The card insets the fields; the form's own grid would inset them
+           again, so the form keeps only the card's padding. */
+        --_form-padding-inline: 0;
+
+        display: grid;
+        gap: var(--space-400);
+    }
+
+    .auth-form label {
+        font-size: var(--fs-050);
+        color: var(--clr-text-secondary);
+    }
+
+    .auth-form__row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-200) var(--space-400);
+    }
+
+    .auth-form__remember {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-200);
+
+        cursor: pointer;
+    }
+
+    .auth-form__link {
+        font-size: var(--fs-050);
+    }
+
+    @container (min-width: 40rem) {
+        .auth-modal__panels {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        /* Divider between the two forms, mirrored in RTL. */
+        .auth-panel + .auth-panel {
+            padding-inline-start: var(--space-600);
+            border-inline-start: var(--border-width-xs) solid
+                var(--clr-border-subtle);
+        }
+    }
+
+    body[data-auth-modal-open] {
+        overflow: hidden;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        .auth-modal__dialog {
+            animation: auth-modal-in var(--duration-animation-default) ease;
+        }
+
+        @keyframes auth-modal-in {
+            from {
+                opacity: 0;
+                translate: 0 var(--space-200);
+            }
+        }
+    }
+}

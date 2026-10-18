@@ -1,0 +1,36 @@
+@layer components {
+    .product-price {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: var(--space-100) var(--space-200);
+    }
+
+    .product-price__current {
+        font-size: var(--fs-125);
+        font-weight: var(--fw-bold);
+        color: var(--clr-text-primary);
+    }
+
+    .product-price__original {
+        font-size: var(--fs-050);
+        color: var(--clr-text-muted);
+        text-decoration: line-through;
+    }
+
+    /* The discount reads through the shared `.badge` block (danger); only what
+       the price line makes of it is its own: a tighter pill, set a touch louder
+       and on its own line height. */
+    .product-price__badge {
+        padding: var(--space-000) var(--space-200);
+
+        font-weight: var(--fw-semibold);
+        line-height: var(--lh-relaxed);
+    }
+
+    .product-price__note {
+        font-size: var(--fs-075);
+        font-weight: var(--fw-regular);
+        color: var(--clr-text-muted);
+    }
+}

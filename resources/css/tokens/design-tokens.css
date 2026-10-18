@@ -1,0 +1,120 @@
+@layer tokens {
+    :root {
+        /* Typography */
+        --ff-accent: "Sora", "Inter", system-ui, -apple-system, sans-serif;
+        --ff-base:
+            "Plus Jakarta Sans", "Inter", -apple-system, "Segoe UI", system-ui,
+            sans-serif;
+
+        --fs-000: 0.5rem;
+        --fs-050: 0.875rem;
+        --fs-075: 0.75rem;
+        --fs-100: 1rem;
+        --fs-125: 1.125rem;
+        --fs-200: 1.25rem;
+        --fs-300: 1.5rem;
+        --fs-400: 1.75rem;
+        --fs-500: 2rem;
+        --fs-600: 2.25rem;
+        --fs-700: 2.5rem;
+        --fs-800: 2.75rem;
+        --fs-900: 3rem;
+
+        --fw-light: 300;
+        --fw-regular: 400;
+        --fw-medium: 500;
+        --fw-semibold: 600;
+        --fw-bold: 700;
+
+        --lh-tight: 1.2;
+        --lh-snug: 1.3;
+        --lh-base: 1.4;
+        --lh-loose: 1.5;
+        --lh-relaxed: 1.6;
+
+        --ls-tight: -0.0625rem;
+        --ls-eyebrow: 0.04em;
+        --ls-brand: 0.08em;
+
+        /* spacing */
+        --space-000: 0rem;
+        --space-100: 0.25rem;
+        --space-200: 0.5rem;
+        --space-300: 0.75rem;
+        --space-400: 1rem;
+        --space-500: 1.25rem;
+        --space-600: 1.5rem;
+        --space-700: 1.75rem;
+        --space-800: 2rem;
+        --space-900: 2.25rem;
+
+        /* Borders */
+        --border-width-xs: 1px;
+        --border-width-sm: 2px;
+        --border-width-md: 3px;
+        --border-width-lg: 4px;
+        --border-width-xl: 5px;
+
+        --border-radius-xs: 0.25rem;
+        --border-radius-sm: 0.5rem;
+        --border-radius-md: 0.75rem;
+        --border-radius-lg: 1rem;
+        --border-radius-xl: 1.25rem;
+        --border-radius-pill: 99999rem;
+
+        /* Shared control geometry. */
+        /* One square for every icon-only action (wishlist toggle, remove, …),
+           so they cannot drift apart. */
+        --size-icon-button: 2.5rem;
+        /* Minimum tap/click target for controls, so they stay reachable on
+           touch screens without growing the layout. */
+        --size-touch-target: 2.75rem;
+        /* The sticky site navigation: panels that stick below it start here,
+           and anchor jumps clear it. */
+        --size-sticky-nav: 2.5rem;
+        /* The width a cart line needs to hold its thumbnail, a readable title,
+           the unit price, the stepper, the total and the controls on one row.
+           The list asks the layout for it, and the container query in cart.css
+           tests for it. */
+        --size-cart-line-inline: 46rem;
+
+        /* A readable measure: a paragraph of running text, and a short message. */
+        --measure-prose: 75ch;
+        --measure-message: 45ch;
+
+        /* Motion: how far a control lifts, and how far a picture or a control
+           leans in, when a pointer is on it. */
+        --lift-control: 5px;
+        --scale-image: 1.05;
+        --scale-control: 1.06;
+
+        /* Layering. The order is the whole story: what covers what. */
+        --z-raised: 1;
+        --z-local: 2;
+        --z-sticky-nav: 60;
+        --z-overlay: 90;
+        --z-drawer: 100;
+        --z-skip-link: 150;
+        --z-modal: 200;
+        --z-toast: 1000;
+
+        /* Dimming: a control that cannot be used, something on its way, and a
+           control that is there but not asking to be noticed. */
+        --opacity-disabled: 0.5;
+        --opacity-loading: 0.6;
+        --opacity-subdued: 0.7;
+
+        --duration-animation-slow: 350ms;
+        --duration-animation-default: 250ms;
+        --duration-animation-fast: 150ms;
+
+        --transparent-percentage: 90%;
+
+        /* The elevation scale: a whisper for a resting card, a lift for a hover
+           or a toast, and a deeper cast for the surfaces that float above the
+           page (the mobile navigation, the drawers, the dialogs). */
+        --shadow-subtle: 0 0 5px var(--clr-shadow-color);
+        --shadow-md: 0 0 7px var(--clr-shadow-color);
+        --shadow-strong: 0 0 10px var(--clr-shadow-color);
+    }
+}

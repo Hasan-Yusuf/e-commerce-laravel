@@ -1,0 +1,25 @@
+@layer components {
+    /* =============================================
+       Generic Card Component
+       =============================================
+       The surface a block is set on: a padded, rounded, softly raised box. What
+       it is painted from is the caller's to set — a private `--_card-*` property
+       each, read here with its default — so a card that wants a different
+       surface, inset or gap overrides the one property it means to, and the
+       cascade order between the two stylesheets never decides it. */
+    .card {
+        background: var(--_card-bg, var(--clr-surface-card));
+        padding: var(--_card-padding, var(--space-400));
+        border-radius: var(--_card-border-radius, var(--border-radius-md));
+        box-shadow: var(--_card-shadow, var(--shadow-subtle));
+        border: var(--_card-border-width, 0) solid
+            var(--_card-border-color, transparent);
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease,
+            border-color 0.2s ease;
+
+        display: grid;
+        gap: var(--_card-gap, var(--space-300));
+    }
+}

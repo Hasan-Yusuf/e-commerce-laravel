@@ -1,0 +1,360 @@
+@layer components {
+    /* =============================================
+       Product details page
+       ============================================= */
+    .product-page {
+        display: grid;
+        gap: var(--space-800);
+
+        padding-block: var(--space-600) var(--space-800);
+    }
+
+    .product-page > section {
+        margin-block-end: 0;
+    }
+
+    .product-layout {
+        --_gallery-fr: 1.1;
+
+        display: grid;
+        gap: var(--space-800);
+        align-items: start;
+
+        @media (min-width: 900px) {
+            grid-template-columns: minmax(0, var(--_gallery-fr)) minmax(0, 1fr);
+        }
+    }
+
+    /* ── Gallery ── */
+    .product-gallery {
+        display: grid;
+        gap: var(--space-300);
+        align-content: start;
+    }
+
+    .product-gallery__main {
+        position: relative;
+
+        aspect-ratio: 4 / 3;
+        overflow: hidden;
+
+        background-color: var(--clr-surface-card);
+        border: var(--border-width-xs) solid var(--clr-border-subtle);
+        border-radius: var(--border-radius-md);
+
+        img {
+            inline-size: 100%;
+            block-size: 100%;
+            object-fit: contain;
+        }
+    }
+
+    .product-gallery__placeholder {
+        display: grid;
+        place-content: center;
+        justify-items: center;
+        gap: var(--space-200);
+
+        block-size: 100%;
+        padding: var(--space-400);
+
+        text-align: center;
+        color: var(--clr-text-muted);
+    }
+
+    .product-gallery__placeholder-icon {
+        inline-size: var(--fs-500);
+        aspect-ratio: 1;
+    }
+
+    .product-gallery__thumbs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-200);
+
+        list-style: none;
+    }
+
+    .product-gallery__thumb {
+        --_thumb-inline: 72px;
+
+        display: block;
+
+        inline-size: var(--_thumb-inline);
+        aspect-ratio: 1;
+        overflow: hidden;
+
+        background-color: var(--clr-surface-card);
+        border: var(--border-width-sm) solid var(--clr-border-subtle);
+        border-radius: var(--border-radius-xs);
+
+        transition: border-color var(--duration-animation-fast) ease;
+
+        &[aria-current="true"] {
+            border-color: var(--clr-action-primary-border);
+        }
+
+        &:where(:hover, :focus-visible) {
+            border-color: var(--clr-border-strong);
+        }
+
+        img {
+            inline-size: 100%;
+            block-size: 100%;
+            object-fit: cover;
+        }
+    }
+
+    /* ── Detail column ── */
+    .product-detail {
+        display: grid;
+        gap: var(--space-400);
+        align-content: start;
+    }
+
+    /* Two columns, filled in the order the markup comes: the brand and the
+       stock state open the row, the name spans it, and the price and the
+       quantity — then the actions and the wishlist — take the two columns
+       below. Only the name's span is declared; the rest is placed by the grid,
+       so the block reflows to one column on a narrow screen without a second
+       placement to keep in step. */
+    .product-detail__grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: var(--space-400) var(--space-500);
+        align-items: start;
+    }
+
+    /* The cart form spans the quantity + actions cells without becoming a box,
+       so its children remain direct grid items. */
+    .product-detail__form {
+        display: contents;
+    }
+
+    /* The controls live in one Livewire component; `display: contents` keeps
+       its children (quantity, actions, wishlist) grid items of the grid above. */
+    .product-detail__actions-group {
+        display: contents;
+    }
+
+    .product-detail__error {
+        font-size: var(--fs-050);
+        color: var(--clr-status-danger-text-primary);
+    }
+
+    .product-detail__brand {
+        font-size: var(--fs-050);
+        color: var(--clr-text-muted);
+
+        span {
+            color: var(--clr-link-text);
+            font-weight: var(--fw-medium);
+        }
+    }
+
+    .product-detail__stock {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    /* The name is the page's heading, so it takes a row of its own. */
+    .product-detail__title {
+        grid-column: 1 / -1;
+
+        min-inline-size: 0;
+
+        font-size: var(--fs-500);
+        font-weight: var(--fw-bold);
+        color: var(--clr-text-primary);
+    }
+
+    /* Price sits above the cart button; quantity above the wishlist button, so
+       each is horizontally aligned with its button. */
+    .product-detail__price {
+        align-self: end;
+    }
+
+    .product-detail__quantity {
+        display: grid;
+        gap: var(--space-200);
+
+        justify-self: end;
+    }
+
+    /* The actions hold the first column of the pair they share with the
+       wishlist, so the wishlist keeps the second even when the quantity above
+       them is left out — a product with no stock to buy. */
+    .product-detail__actions {
+        grid-column: 1;
+    }
+
+    .product-detail__actions .btn,
+    .product-detail__wishlist .btn {
+        inline-size: 100%;
+    }
+
+    .product-rating {
+        display: flex;
+        align-items: center;
+        gap: var(--space-200);
+
+        font-size: var(--fs-050);
+        color: var(--clr-text-muted);
+    }
+
+    .product-rating__stars {
+        --_stars-letter-spacing: 2px;
+
+        color: var(--clr-action-warning-bg);
+        letter-spacing: var(--_stars-letter-spacing);
+    }
+
+    .product-detail__quantity-label {
+        font-size: var(--fs-050);
+        color: var(--clr-text-secondary);
+    }
+
+    .product-detail__sku {
+        font-size: var(--fs-050);
+        color: var(--clr-text-muted);
+
+        span {
+            color: var(--clr-text-secondary);
+        }
+    }
+
+    .product-info-blocks {
+        display: grid;
+        gap: var(--space-300);
+    }
+
+    .info-block {
+        display: flex;
+        align-items: center;
+        gap: var(--space-300);
+
+        padding: var(--space-300) var(--space-400);
+
+        background-color: var(--clr-surface-card);
+        border: var(--border-width-xs) solid var(--clr-border-subtle);
+        border-radius: var(--border-radius-sm);
+    }
+
+    .info-block__icon {
+        flex-shrink: 0;
+
+        inline-size: var(--fs-200);
+        aspect-ratio: 1;
+
+        color: var(--clr-link-text);
+    }
+
+    .info-block__title {
+        font-size: var(--fs-050);
+        font-weight: var(--fw-semibold);
+        color: var(--clr-text-primary);
+    }
+
+    /* ── Specs & description sections ── */
+    .product-section {
+        display: grid;
+        gap: var(--space-300);
+    }
+
+    .product-description {
+        color: var(--clr-text-secondary);
+    }
+
+    .specs-table {
+        inline-size: 100%;
+        table-layout: fixed;
+        border-collapse: collapse;
+    }
+
+    .specs-table__label,
+    .specs-table__value {
+        padding-block: var(--space-400);
+        vertical-align: top;
+        overflow-wrap: break-word;
+    }
+
+    .specs-table__label {
+        text-align: start;
+
+        border-block-end: none;
+
+        font-weight: var(--fw-medium);
+        color: var(--clr-text-secondary);
+    }
+
+    .specs-table__value {
+        color: var(--clr-text-primary);
+        font-weight: var(--fw-bold);
+    }
+
+    /* A line between one spec and the next, so a long table reads as rows
+       rather than as one block of text. Dotted, so it separates without
+       competing with the values it sits between. */
+    .specs-table tbody tr + tr > * {
+        border-block-start: var(--border-width-xs) dotted
+            var(--clr-border-subtle);
+    }
+
+    /* Narrow screens: the value drops under its spec name and takes the width
+       of the screen instead of the column beside it, and the name reads as a
+       small caption over it. The rows keep their dividing line. */
+    @media (max-width: 599.98px) {
+        .specs-table {
+            display: block;
+
+            /* The table model is gone here, so its border collapsing is too:
+               each row draws its own line. */
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .specs-table tbody {
+            display: block;
+        }
+
+        .specs-table tbody tr {
+            display: grid;
+            gap: var(--space-200);
+            padding-block: var(--space-400);
+        }
+
+        .specs-table tbody tr + tr > * {
+            border-block-start: 0;
+        }
+
+        .specs-table tbody tr + tr {
+            border-block-start: var(--border-width-xs) dotted
+                var(--clr-border-subtle);
+        }
+
+        .specs-table__label,
+        .specs-table__value {
+            display: block;
+            padding-block: 0;
+        }
+
+        .specs-table__label {
+            padding-inline-end: 0;
+
+            font-size: var(--fs-075);
+            color: var(--clr-text-muted);
+        }
+    }
+
+    /* Single column on narrow screens: the grid's own order is the reading
+       order, so only the layout changes. */
+    @media (max-width: 599.98px) {
+        .product-detail__grid {
+            grid-template-columns: 1fr;
+        }
+
+        .product-detail__stock {
+            justify-content: flex-start;
+        }
+    }
+}

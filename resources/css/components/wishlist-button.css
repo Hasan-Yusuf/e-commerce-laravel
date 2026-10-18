@@ -1,0 +1,40 @@
+@layer components {
+    /* =============================================
+       Wishlist toggle (product cards + product page)
+       ============================================= */
+
+    /* Icon-only variant: the square comes from the shared `btn--icon` size
+       modifier; only the labelled variant needs its own sizing. */
+    .wishlist-button--labeled {
+        inline-size: 100%;
+    }
+
+    .wishlist-button__icon {
+        inline-size: var(--fs-200);
+        block-size: var(--fs-200);
+
+        transition: fill var(--duration-animation-fast) ease;
+    }
+
+    /* Saved: the same control now removes, so the heart is filled (the button
+       colour itself comes from the `danger` variant). */
+    .wishlist-button--active .wishlist-button__icon {
+        fill: currentColor;
+    }
+
+    /* Product cards put the toggle beside the main action: the main action
+       fills the row, the toggle stays a square (centred on the row). */
+    .product-card__actions {
+        display: flex;
+        align-items: center;
+        gap: var(--space-200);
+    }
+
+    .product-card__actions form:not(.wishlist-button__form) {
+        flex: 1;
+    }
+
+    .product-card__actions .wishlist-button__form {
+        flex: none;
+    }
+}

@@ -1,0 +1,92 @@
+@layer components {
+    /* =============================================
+       Page Layout (grid skeleton)
+       ============================================= */
+    /* The regions below are placed on the grid declared on <body>. The band,
+       the page and the footer each span the full width; their inner .wrapper /
+       .wrapper--wide helpers do the main / wide alignment within that width.
+       Their rows are: 1 and 2 the header band, 3 the gap under it, 4 the page,
+       5 the gap over the footer, 6 the footer. */
+    .site-header-band {
+        grid-column: full-start / full-end;
+        /* The band's rows are the page grid's own, so the top bar and the
+           navigation inside it size them, while the band's box reaches over the
+           page's row below: that box is what the sticky navigation travels in,
+           which is why the band is not simply a wrapper of its own height. */
+        grid-row: 1 / 5;
+        display: grid;
+        grid-template-rows: subgrid;
+    }
+
+    .site-main {
+        grid-column: full-start / full-end;
+        grid-row: 4;
+    }
+
+    /* The gap under the page belongs to the grid, so the last block on a page
+       does not add a trailing margin of its own on top of it — and a page that
+       ends in a wrapper is spaced like one that ends in the block itself. */
+    .site-main > :last-child,
+    .site-main > :last-child > :last-child {
+        margin-block-end: 0;
+    }
+
+    /* <main> is the flexible row between the navigation and the footer, and lays
+       its content out as a plain block. It only becomes a grid when it holds an
+       item that asked to sit in the middle of its cell (.grid-center): the grid
+       is what gives that utility a cell tall enough to centre in. */
+    .site-main:has(> .grid-center) {
+        display: grid;
+    }
+
+    .site-footer {
+        grid-column: full-start / full-end;
+        grid-row: 6;
+    }
+
+    /* A page that pairs a main column with a side column — the cart's lines and
+       its summary, the checkout's step and its summary, the contact details and
+       the form — shares one shape: the two sit beside each other while both
+       hold their width, and one drops under the other when they cannot. The
+       child that carries its width decides where the pair breaks. */
+    .cart-layout,
+    .checkout-layout,
+    .contact-layout {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: var(--space-600);
+    }
+
+    /* Keyboard users can jump past the header band and land in the page: the
+       control sits above the viewport until it is focused, then it lands over
+       the top of the band. It clears the page's own stacking (the navigation
+       sticks at 60) but not the dialogs and toasts that cover the screen. */
+    .site-skip-link {
+        --_hidden-offset: -200%;
+
+        position: fixed;
+        inset-block-start: var(--space-200);
+        inset-inline-start: var(--space-200);
+        z-index: var(--z-skip-link);
+
+        padding: var(--space-200) var(--space-400);
+
+        border-radius: var(--border-radius-sm);
+        background-color: var(--clr-action-primary-bg);
+        color: var(--clr-action-primary-text);
+        text-decoration: none;
+
+        transform: translateY(var(--_hidden-offset));
+
+        &:focus-visible {
+            transform: translateY(0);
+        }
+    }
+
+    /* The skip link's target carries focus for the reader, not for the eye: the
+       page region is not a control, so it draws no ring of its own. */
+    .site-main:focus {
+        outline: none;
+    }
+}

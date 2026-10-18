@@ -1,0 +1,17 @@
+@layer components {
+    /* =============================================
+       Form field errors (paired with the field's
+       aria-describedby target)
+       ============================================= */
+    .form-error {
+        display: grid;
+        gap: var(--space-100);
+
+        padding-inline-start: 0;
+
+        list-style: none;
+
+        color: var(--clr-status-danger-text);
+        font-size: var(--fs-050);
+    }
+}

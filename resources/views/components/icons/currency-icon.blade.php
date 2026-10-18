@@ -1,0 +1,18 @@
+@props(['size' => 24, 'class' => ''])
+
+<svg
+    {{ $attributes->class(['icon', $class]) }}
+    xmlns="http://www.w3.org/2000/svg"
+    width="{{ $size }}"
+    height="{{ $size }}"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+>
+    <rect x="2.5" y="6" width="19" height="12" rx="2" />
+    <circle cx="12" cy="12" r="2.5" />
+    <path d="M6 9.5v5M18 9.5v5" />
+</svg>

@@ -1,0 +1,346 @@
+@layer base {
+    html {
+        font-family: var(--ff-base);
+        font-size: var(--fs-100);
+        font-weight: var(--fw-regular);
+
+        interpolate-size: allow-keywords;
+    }
+
+    ::selection {
+        background-color: var(--clr-surface-inverse);
+        color: var(--clr-text-inverse);
+    }
+
+    /* ── The scrollbar, everywhere ──
+       Drawn from the palette rather than left as the browser's own, and for the
+       whole site rather than one scroller: `scrollbar-color` and
+       `scrollbar-width` are inherited properties, so setting them on the root
+       hands them to every element that scrolls, and the `::-webkit-scrollbar`
+       rules are the spelling Safari and older Chromium engines answer to.
+
+       An element that styles a scrollbar of its own still wins, which is how
+       the hero slider keeps its track hidden. */
+    :root {
+        scrollbar-width: thin;
+        scrollbar-color: var(--clr-scrollbar-thumb) var(--clr-scrollbar-track);
+
+        /* The scrollbar's room is kept whether or not a scrollbar is there, so a
+           page whose content only just outgrows the fold does not shift
+           sideways when it does. */
+        scrollbar-gutter: stable;
+    }
+
+    /* Engines that do not know `scrollbar-gutter` yet keep the same room the
+       older way: a scrollbar that is always in the layout. Nothing of it shows
+       on a page that fits — its track is transparent — so the fallback costs
+       the engines that need it nothing but the room they were asked to keep. */
+    @supports not (scrollbar-gutter: stable) {
+        :root {
+            overflow-y: scroll;
+        }
+    }
+
+    ::-webkit-scrollbar {
+        /* Physical, not logical: the engines that need this pseudo-element do
+           not give it the logical properties. */
+        width: var(--space-300);
+        height: var(--space-300);
+    }
+
+    ::-webkit-scrollbar-track,
+    ::-webkit-scrollbar-corner {
+        background-color: var(--clr-scrollbar-track);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: var(--clr-scrollbar-thumb);
+
+        /* The transparent border, clipped away again by `background-clip`, is
+           the room between the thumb and the ends of the track: the bar reads as
+           a rounded lozenge rather than filling its channel. */
+        background-clip: padding-box;
+        border: var(--border-width-sm) solid transparent;
+        border-radius: var(--border-radius-pill);
+
+        transition: background-color var(--duration-animation-fast);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: var(--clr-scrollbar-thumb-hover);
+    }
+
+    section {
+        margin-block-end: var(--space-900);
+    }
+
+    body {
+        /* Page grid: one grid carries both the horizontal full-bleed rails
+           (gutter | wide | main | wide | gutter) and the vertical regions
+           (header band | gap | page | gap | footer). The gaps are rows of the
+           grid's own, so the page stands off the header band above it and the
+           footer below it on every page, whether the block it ends with carries
+           a margin of its own or not. Only the page row is flexible, so the
+           footer sits flush against the bottom of the viewport on short pages
+           instead of leaving empty space beneath it. */
+        --_page-main: 1200px;
+        --_page-wide: 1600px;
+        --_page-rail: calc((var(--_page-wide) - var(--_page-main)) / 2);
+        --_page-gap: var(--space-900);
+
+        display: grid;
+        grid-template-columns:
+            [full-start] minmax(var(--space-400), 1fr)
+            [wide-start] minmax(0, var(--_page-rail))
+            [main-start] minmax(0, var(--_page-main)) [main-end]
+            minmax(0, var(--_page-rail)) [wide-end]
+            minmax(var(--space-400), 1fr) [full-end];
+        /* The header band owns the first two rows; the gaps are rows rather than
+           one `gap` for all of them, because a single gap would also stand the
+           top bar off the navigation underneath it, which are one band. */
+        grid-template-rows:
+            auto
+            auto
+            var(--_page-gap)
+            1fr
+            var(--_page-gap)
+            auto;
+        min-block-size: 100dvh;
+
+        background: var(--clr-surface-page);
+        color: var(--clr-text-muted);
+    }
+
+    a {
+        color: var(--clr-link-text);
+
+        transition: color;
+
+        &:where(:visited) {
+            color: var(--clr-link-text-visited);
+        }
+
+        &:where(:hover, :focus-visible) {
+            color: var(--clr-link-text-hover);
+        }
+
+        &:where(:active) {
+            color: var(--clr-link-text-active);
+        }
+    }
+
+    /* ── The ring of focus ──
+       Anything the keyboard can reach says so the same way: a ring drawn just
+       outside the element, in the focus colour, so it lands on the page rather
+       than on top of whatever the element paints for itself. Every element the
+       keyboard stops on gets this, not only the controls that happened to be
+       styled for it.
+
+       It answers `:focus-visible` rather than `:focus` on purpose: a pointer
+       press focuses a control without asking where the focus went, while a key
+       press is navigation, and the ring is the answer to it.
+
+       This is the floor, not the last word. A control that knows better overrides
+       it in the components layer — a button painted from a variant, or a control
+       standing inside a box that would clip a ring drawn outside it. */
+    :focus-visible {
+        outline: var(--border-width-sm) solid var(--clr-focus-ring);
+        outline-offset: var(--border-width-xs);
+    }
+
+    blockquote {
+        color: var(--clr-text-primary);
+        background-color: var(--clr-surface-elevated);
+
+        padding: var(--space-200) var(--space-300);
+
+        border-radius: var(--border-radius-sm);
+        border-inline-start: var(--border-width-lg) solid
+            var(--clr-border-subtle);
+    }
+
+    *::marker {
+        color: var(--clr-text-primary);
+    }
+
+    table {
+        border-radius: var(--border-radius-md);
+        border-collapse: collapse;
+
+        th {
+            padding: var(--space-100) var(--space-200);
+            font-weight: var(--fw-bold);
+            color: var(--clr-text-primary);
+
+            border-block-end: var(--border-width-md) dashed
+                var(--clr-border-subtle);
+        }
+
+        tr {
+            &:nth-child(even) {
+                background-color: var(--clr-surface-elevated);
+            }
+            &:hover {
+                background-color: var(--clr-surface-card);
+            }
+        }
+
+        td {
+            padding: var(--space-100) var(--space-300);
+        }
+    }
+
+    /* ── The form layout ──
+       The grid a multi-field form is built on: each field a column track, as
+       many as the form's own width allows, and the same inline inset every
+       page's forms share. It is a class rather than the `form` element, so a
+       form that is not a grid of fields — a search, a sort, a one-button form —
+       is not forced into one; only the forms that are laid out as fields carry
+       it. A form that is itself a card takes the card's padding instead. */
+    .form {
+        display: grid;
+        gap: var(--_gap, var(--space-300));
+        grid-auto-flow: dense;
+
+        grid-template-columns: repeat(
+            auto-fill,
+            minmax(minmax(min(var(--_min-col-width, 300px), 100%), 1fr) 1fr)
+        );
+
+        @media (min-width: 600px) {
+            grid-template-columns: repeat(var(--_column-num, 1), 1fr);
+        }
+
+        padding-inline: var(--_form-padding-inline, var(--space-400));
+    }
+
+    fieldset {
+        border-color: var(--clr-border-subtle);
+        border-radius: var(--border-radius-md);
+
+        padding: var(--space-300) var(--space-400);
+    }
+
+    input,
+    button,
+    textarea,
+    select {
+        --_clr-surface: var(--clr-surface-elevated);
+        --_clr-on-surface: var(--clr-text-primary);
+        --_clr-mix-percentage: 80%;
+
+        padding: var(--space-200) var(--space-300);
+
+        border-radius: var(--border-radius-sm);
+        border: none;
+
+        background: var(--_clr-surface);
+        color: var(--_clr-on-surface);
+
+        &:disabled {
+            background: var(--clr-action-disabled-bg);
+            color: var(--clr-action-disabled-text);
+        }
+
+        &:where(:focus-visible) {
+            --_clr-surface: var(--clr-surface-card);
+        }
+
+        &::placeholder {
+            color: var(--clr-text-muted);
+        }
+    }
+
+    option {
+        color: var(--clr-text-primary);
+        background-color: var(--_clr-surface);
+    }
+
+    /* A radio and a checkbox are marks rather than fields: they stand at a
+       control's size instead of growing into the padded box the text fields
+       around them carry. */
+    input:where([type="radio"], [type="checkbox"]) {
+        padding: 0;
+        background: none;
+
+        inline-size: var(--space-500);
+        block-size: var(--space-500);
+
+        cursor: pointer;
+    }
+
+    textarea {
+        field-sizing: content;
+        resize: none;
+        overflow-y: auto;
+
+        /* Sized to its content, an empty textarea is one line tall — the shape of
+           a single-line input, which is not what it takes. Two lines of room from
+           the start is what says it takes a paragraph. */
+        min-block-size: calc(3lh + (var(--space-200) * 2));
+    }
+
+    input:not([type="radio"], [type="checkbox"], [type="range"]),
+    textarea {
+        &:user-valid {
+            outline: var(--border-width-xs) solid
+                var(--clr-status-success-border);
+            background: color-mix(
+                in oklch,
+                var(--_clr-surface) var(--_clr-mix-percentage),
+                var(--clr-action-success-bg)
+            );
+
+            color: color-mix(
+                in oklch,
+                var(--_clr-on-surface) var(--_clr-mix-percentage),
+                var(--clr-action-success-bg)
+            );
+        }
+
+        &:user-invalid {
+            outline: var(--border-width-xs) solid
+                var(--clr-status-danger-border);
+
+            background: color-mix(
+                in oklch,
+                var(--_clr-surface) var(--_clr-mix-percentage),
+                var(--clr-action-danger-bg)
+            );
+
+            color: color-mix(
+                in oklch,
+                var(--_clr-on-surface) var(--_clr-mix-percentage),
+                var(--clr-action-danger-bg)
+            );
+        }
+    }
+
+    /* A field answered well or badly says so with a tinted background, a tinted
+       text colour and an outline. A `<select>` says so with the outline alone.
+       The browser paints a drop-down list from the field it belongs to — the
+       list wears the field's background, and every option is labelled in the
+       field's text colour — and a colour mixed for that state is one the labels
+       are never drawn in, so the list opens as rows with nothing written on
+       them (Firefox). The outline carries the same message without the field
+       wearing a colour the list cannot use. */
+    select {
+        &:user-valid {
+            outline: var(--border-width-xs) solid
+                var(--clr-status-success-border);
+        }
+
+        &:user-invalid {
+            outline: var(--border-width-xs) solid
+                var(--clr-status-danger-border);
+        }
+    }
+
+    label {
+        color: var(--clr-text-primary);
+    }
+
+    hr {
+        border: none;
+    }
+}

@@ -1,0 +1,207 @@
+@layer components {
+    /* =============================================
+       Account
+       =============================================
+       The shopper's own area: the navigation that reaches every part of it, and
+       the overview that opens it. The orders pages wear the same navigation, so
+       all of it reads as one area. */
+    .account-layout {
+        display: grid;
+        gap: var(--space-600);
+        align-items: start;
+    }
+
+    /* A table wider than a phone scrolls inside its own column; it never
+       widens the layout it sits in. */
+    .account-content {
+        min-inline-size: 0;
+    }
+
+    .account-nav {
+        padding: var(--space-200);
+
+        background-color: var(--clr-surface-card);
+        border: var(--border-width-xs) solid var(--clr-border-subtle);
+        border-radius: var(--border-radius-md);
+    }
+
+    .account-nav__list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-100);
+
+        list-style: none;
+        padding: 0;
+    }
+
+    .account-nav__link {
+        display: block;
+
+        padding: var(--space-200) var(--space-300);
+
+        border-radius: var(--border-radius-sm);
+        color: var(--clr-text-secondary);
+        font-weight: var(--fw-medium);
+        text-decoration: none;
+
+        transition:
+            background-color var(--duration-animation-fast) ease,
+            color var(--duration-animation-fast) ease;
+
+        &:where(:hover, :focus-visible) {
+            background-color: var(--clr-action-tertiary-bg-hover);
+            color: var(--clr-action-tertiary-text-hover);
+        }
+    }
+
+    /* The section the shopper is in wears the quiet action colours, the pair
+       the storefront's tertiary controls use. */
+    .account-nav__link--active {
+        background-color: var(--clr-action-tertiary-bg-hover);
+        color: var(--clr-action-tertiary-text);
+        font-weight: var(--fw-semibold);
+    }
+
+    /* A page of the account area whose blocks carry no spacing of their own: the
+       overview and the profile stack their sections here. */
+    .account-sections {
+        display: grid;
+        gap: var(--space-600);
+        align-content: start;
+
+        min-inline-size: 0;
+    }
+
+    .account-panel__title {
+        font-size: var(--fs-300);
+        font-weight: var(--fw-semibold);
+        color: var(--clr-text-primary);
+    }
+
+    .account-details__row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: var(--space-100) var(--space-400);
+
+        padding-block: var(--space-200);
+
+        border-block-start: var(--border-width-xs) solid
+            var(--clr-border-subtle);
+    }
+
+    /* The first row is the top of the list, not a divider. */
+    .account-details__row:first-child {
+        border-block-start: none;
+    }
+
+    .account-details dt {
+        font-size: var(--fs-050);
+        color: var(--clr-text-secondary);
+    }
+
+    .account-details dd {
+        color: var(--clr-text-primary);
+        font-weight: var(--fw-medium);
+        overflow-wrap: anywhere;
+    }
+
+    /* ── Recent orders ── */
+    .account-orders {
+        display: grid;
+        gap: var(--space-400);
+        align-content: start;
+    }
+
+    .account-orders__header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: var(--space-200) var(--space-400);
+    }
+
+    .account-orders__title {
+        font-size: var(--fs-300);
+        font-weight: var(--fw-semibold);
+        color: var(--clr-text-primary);
+    }
+
+    .account-orders__link {
+        font-size: var(--fs-050);
+    }
+
+    /* ── Profile ──
+       The details, the delivery address and the password: three forms, each a
+       card of its own. They open read-only — the account as it stands — and the
+       script behind the toggle is what makes them answerable (see
+       account-form.js), so without it nothing is ever locked. */
+    .account-form {
+        --_card-gap: var(--space-400);
+    }
+
+    /* The card's title and the one way into changing what is under it. */
+    .account-form__header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-200) var(--space-400);
+    }
+
+    /* The two fields that answer as one thing — the country the account is in,
+       and the number it reaches — share a row of the form: the split grid gives
+       them the same room each, and the row keeps the form's own spacing. */
+    .account-form__pair {
+        --_gap: var(--space-300);
+    }
+
+    /* Locked: the account as it stands, and nothing to send. */
+    .account-form--locked .account-form__actions {
+        display: none;
+    }
+
+    /* Editing: the toggle has done its job, and the fields are the shopper's
+       again. */
+    .account-form--editing .account-form__toggle {
+        display: none;
+    }
+
+    /* The password's card holds a secret: a masked field says nothing while it is
+       empty, so the locked form shows no fields at all. There is nothing to see
+       until the shopper asks to change the password, and then there is no lock
+       left to explain. */
+    .account-form--secrets.account-form--locked > .form-field {
+        display: none;
+    }
+
+    /* The card spaces the fields, so the shared actions row only has to keep
+       laying them out. */
+    .account-form .form-actions {
+        padding: 0;
+    }
+
+    /* A line of explanation under a card's section title. */
+    .account-form__note {
+        font-size: var(--fs-000);
+        color: var(--clr-text-muted);
+    }
+
+    /* Below the breakpoint the sections are one row of tabs above the page, so
+       the navigation never narrows the content it opens. */
+    @media (min-width: 900px) {
+        .account-layout {
+            --_nav-min: 200px;
+            --_nav-max: 15rem;
+
+            grid-template-columns: minmax(
+                    var(--_nav-min),
+                    var(--_nav-max)
+                ) minmax(0, 1fr);
+        }
+
+        .account-nav__list {
+            flex-direction: column;
+        }
+    }
+}

@@ -1,0 +1,174 @@
+@layer components {
+    /* =============================================
+       Products Grid (What's New)
+       ============================================= */
+    .products-grid {
+        --_min-column-width: 15rem;
+    }
+
+    .product-card {
+        position: relative;
+
+        display: flex;
+        flex-direction: column;
+
+        padding: var(--space-600);
+
+        background-color: var(--clr-surface-card);
+        border-radius: var(--border-radius-md);
+        box-shadow: var(--shadow-subtle);
+
+        transition:
+            transform var(--duration-animation-fast) ease,
+            box-shadow var(--duration-animation-fast) ease;
+
+        /* The card leans towards the pointer the way a category card does: a
+           slight lift and a deeper shadow, and no layout shift. */
+        &:hover {
+            transform: translateY(calc(var(--lift-control) * -1));
+            box-shadow: var(--shadow-strong);
+        }
+    }
+
+    /* Stock state pill pinned to the inline-end (right in LTR, left in RTL). */
+    .product-card__badges {
+        position: absolute;
+        inset-block-start: var(--space-400);
+        inset-inline-end: var(--space-400);
+        z-index: var(--z-raised);
+
+        display: flex;
+        gap: var(--space-100);
+    }
+
+    .product-card__image {
+        --_image-block-size: 180px;
+
+        position: relative;
+
+        inline-size: 100%;
+        block-size: var(--_image-block-size);
+        margin-block-end: var(--space-400);
+
+        overflow: hidden;
+
+        border-radius: var(--border-radius-xs);
+        background-color: var(--clr-surface-elevated);
+
+        img {
+            inline-size: 100%;
+            block-size: 100%;
+            object-fit: cover;
+
+            transition: transform var(--duration-animation-slow) ease;
+        }
+    }
+
+    /* The picture leans in as the card rises: the crop stays the size it was,
+       so nothing around it moves. */
+    .product-card:hover .product-card__image img {
+        transform: scale(var(--scale-image));
+    }
+
+    .product-card__title {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        line-clamp: 2;
+        -webkit-line-clamp: 2;
+
+        overflow: hidden;
+
+        margin-block-end: var(--space-200);
+
+        font-size: var(--fs-050);
+        font-weight: var(--fw-bold);
+        line-height: var(--lh-snug);
+        color: var(--clr-text-secondary);
+    }
+
+    /* The brand line above the name: the logo the shop uploaded, when there is
+       one, then the name — small and quiet, so the product name still leads. */
+    .product-card__heading {
+        display: grid;
+        gap: var(--space-200);
+    }
+
+    /* The brand names the product above its title: small, muted, and set in
+       caps, so it reads as a label rather than as part of the product name. */
+    .product-card__brand {
+        font-size: var(--fs-075);
+        font-weight: var(--fw-semibold);
+        line-height: var(--lh-tight);
+        letter-spacing: var(--ls-brand);
+        text-transform: uppercase;
+        color: var(--clr-text-muted);
+    }
+
+    .product-card__price {
+        display: flex;
+        align-items: baseline;
+        gap: var(--space-100);
+
+        margin-block: auto var(--space-400);
+
+        font-size: var(--fs-125);
+        font-weight: var(--fw-bold);
+        color: var(--clr-text-primary);
+    }
+
+    .product-card__price-note {
+        font-size: var(--fs-075);
+        font-weight: var(--fw-regular);
+        color: var(--clr-text-muted);
+    }
+
+    /* Card image + title are wrapped in a link to the product page. */
+    .product-card__link {
+        display: grid;
+        gap: var(--space-400);
+
+        color: inherit;
+        text-decoration: none;
+
+        &:where(:hover, :focus-visible) .product-card__title {
+            color: var(--clr-link-text);
+        }
+
+        .product-card__title {
+            margin-block-end: 0;
+        }
+    }
+
+    .product-card__meta {
+        display: grid;
+        gap: var(--space-200);
+
+        margin-block: auto var(--space-400);
+    }
+
+    .category-card__count {
+        font-size: var(--fs-075);
+        color: var(--clr-text-muted);
+    }
+
+    /* A reader who has asked the page not to move still gets every colour and
+       shadow the pointer brings; only the movement is withheld. */
+    @media (prefers-reduced-motion: reduce) {
+        .product-card {
+            transition: none;
+
+            &:hover {
+                transform: none;
+                box-shadow: var(--shadow-subtle);
+            }
+        }
+
+        .product-card__image img {
+            transition: none;
+        }
+
+        .product-card:hover .product-card__image img {
+            transform: none;
+        }
+    }
+}

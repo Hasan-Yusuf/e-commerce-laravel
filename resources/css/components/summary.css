@@ -1,0 +1,107 @@
+@layer components {
+    /* =============================================
+       Summary
+       =============================================
+       The label/value rows a set of totals is read through — a cart's, an
+       order's — and the rule that closes them. */
+    .summary {
+        display: grid;
+        gap: var(--space-200);
+
+        margin: 0;
+    }
+
+    .summary__row {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: var(--space-200);
+
+        color: var(--clr-text-secondary);
+        font-size: var(--_summary-row-font-size, inherit);
+
+        dt,
+        dd {
+            margin: 0;
+        }
+    }
+
+    /* A saving reads as a reduction of its own, above the rule that closes the
+       totals. */
+    .summary__row--discount {
+        color: var(--clr-status-success-text);
+        font-weight: var(--fw-semibold);
+    }
+
+    .summary__row--total {
+        padding-block-start: var(--space-200);
+
+        border-block-start: var(--border-width-xs) solid
+            var(--clr-border-subtle);
+
+        color: var(--clr-text-primary);
+        font-weight: var(--fw-semibold);
+    }
+
+    /* =============================================
+       Line item
+       =============================================
+       One line of what an order holds, read back the same way whether it is
+       restated on a confirmation or reviewed at the checkout: what was bought
+       on the one side, what it cost on the other. */
+    .line-item {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--space-100) var(--space-300);
+
+        padding-block-end: var(--space-300);
+
+        border-block-end: var(--border-width-xs) solid var(--clr-border-subtle);
+
+        font-size: var(--fs-050);
+    }
+
+    .line-item:last-child {
+        padding-block-end: 0;
+        border-block-end: none;
+    }
+
+    .line-item__info {
+        display: grid;
+        gap: var(--space-100);
+
+        min-inline-size: 0;
+    }
+
+    .line-item__name {
+        font-weight: var(--fw-medium);
+        color: var(--clr-text-primary);
+        overflow-wrap: break-word;
+    }
+
+    .line-item__sku {
+        font-size: var(--fs-000);
+        color: var(--clr-text-muted);
+    }
+
+    .line-item__quantity {
+        color: var(--clr-text-secondary);
+    }
+
+    .line-item__total {
+        margin-inline-start: auto;
+
+        font-weight: var(--fw-semibold);
+        color: var(--clr-text-primary);
+        white-space: nowrap;
+    }
+
+    /* A note about the line — the price moved since it was added — reads on a
+       line of its own under it. */
+    .line-item__notice {
+        flex-basis: 100%;
+
+        color: var(--clr-status-warning-text);
+    }
+}
